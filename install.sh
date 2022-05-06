@@ -589,7 +589,17 @@ while true; do
 	case "$CONFIG_ACTION" in
 		 1) _stow audacious bash dunst fontconfig gpg gtk htop neofetch nnn picom rofi scripts vim wallpapers X ;;
 		 2) _stow audacious  ;;
-		 3) _stow bash       ;;
+		 3)
+			 _stow bash;
+
+			 printf "$BLUEBG_BOLD[NOTICE] Installing BLE.sh...$ENDCOL\n" \
+			 && LASTDIR="$(pwd)" \
+			 && cd $HOME/Documents && mkdir -p 'software' \
+			 && git clone --recursive https://github.com/akinomyoga/ble.sh.git \
+			 && make -j$(nproc) -C ble.sh install PREFIX=~/.local && cd $LASTDIR \
+			 && printf "$BLUEBG_BOLD[SUCCESS] Successfully installed BLE.sh. $ENDCOL\n" \
+			 || printf "$REDBG_BOLD[ERROR] Could not build/install BLE.sh! $ENDCOL\n"
+			 ;;
 		 4) _stow dunst      ;;
 		 5) _stow fontconfig ;;
 		 6) _stow gpg        ;;
