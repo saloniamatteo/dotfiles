@@ -576,7 +576,7 @@ function __config_ask_action() {
 
 function _stow() {
 	echo "Stowing $@..."
-	stow --adopt -v -t $HOME $@
+	stow --verbose -t $HOME $@
 	echo "Done!"
 }
 
