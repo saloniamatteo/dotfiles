@@ -83,7 +83,7 @@ for my build of dwm & dwmblocks. If you need any help, go there.
 NOTE: If you want to change GTK's graphical settings on dwm,
 such as the cursor theme or the icon theme, use a program like `lxappearance`.
 
-### Firefox (LibreWolf/PaleMoon) addons
+### Firefox (LibreWolf) addons
 Here's a list of the Firefox addons I use:
 - Age restriction bypass for YouTube
 - Amazon Container
