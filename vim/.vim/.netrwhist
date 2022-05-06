@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =5
+let g:netrw_dirhist_5='/home/matteo/dotfiles/dwm'
+let g:netrw_dirhist_4='/home/matteo/dotfiles'
+let g:netrw_dirhist_3='/home/matteo'
+let g:netrw_dirhist_2='/home/matteo/software'
+let g:netrw_dirhist_1='/etc/portage'
+let g:netrw_dirhist_0='/mnt/artix/var/spool/cron'
+let g:netrw_dirhist_9='/home/matteo/Mail'
+let g:netrw_dirhist_8='/mnt/artix/home/matteo/Documents/code/xforms/greet'
+let g:netrw_dirhist_7='/home/matteo/software/tp-xfan/src'
+let g:netrw_dirhist_6='/home/matteo/software/calc/src'

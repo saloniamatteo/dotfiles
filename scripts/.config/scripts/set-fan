@@ -1,0 +1,36 @@
+#!/bin/bash
+# this script sets the level/speed of the ThinkPad fan
+
+# if doas is installed, use it
+[ $(which doas) ] && root="doas" || root="sudo"
+
+level="$1"
+
+# if script doesn't have an argument, use dmenu to ask user for speed
+if [ -z "$level" ]; then
+	level=$(printf "$(seq 7)\nauto\nmax" | dmenu -i -p "Choose a speed level:")
+fi
+
+# check if speed is auto
+if [[ "$level" == "a" || "$level" == "automatic" || "$level" == "auto" ]]; then
+	# set appropriate keyword
+	level="auto"
+
+# check if full-speed
+else if [[ "$level" == "m" || "$level" == "max" || "$level" == "fullspeed" || "$level" == "full-speed" ]]; then
+	# set appropriate keyword
+	level="disengaged"
+
+# check if speed is not between 1 and 7
+else if [[ ! "$level" =~ [1-7] ]]; then
+	printf "Please enter a number between 1 and 7! \n" && exit 1
+fi
+fi
+fi
+
+# tell user chosen speed
+printf "Using speed $level...\n"
+
+while [ $(cat /proc/acpi/ibm/fan | grep level -m1 | awk '{print $2}') != "$level" ]; do
+	echo "level $level" | $root tee "/proc/acpi/ibm/fan"
+done

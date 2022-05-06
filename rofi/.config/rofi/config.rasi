@@ -1,0 +1,6 @@
+configuration {
+	modi: "run,drun,window,ssh";
+	font: "Iosevka 12";
+}
+
+@theme "/usr/share/rofi/themes/Arc-Dark.rasi"

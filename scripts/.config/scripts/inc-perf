@@ -1,0 +1,32 @@
+#!/bin/sh
+
+[ $(whoami) = "root" ] && root="" || root="doas"
+
+# increase cpu performance
+printf "Increasing CPU performance! \n\n"
+# set fan speed to 7
+echo "level 7" | $root tee /proc/acpi/ibm/fan
+# apply undervolt
+$root intel-undervolt apply
+# increase frequency
+$root cpupower -c all set -b 0
+$root cpupower frequency-set -f 34000000
+$root c2ctl 0-7 -e
+$root c2ctl 0 30 30
+$root c2ctl 1 30 30
+$root c2ctl 2 30 30
+$root c2ctl 3 30 30
+$root c2ctl 4 30 30
+$root c2ctl 5 30 30
+$root c2ctl 6 30 30
+$root c2ctl 7 30 30
+# enable Turbo Boost
+$root x86_energy_perf_policy --turbo-enable 1
+# set governor to performance
+$root x86_energy_perf_policy performance
+$root cpupower frequency-set -g performance
+# reserve huge pages
+$root sysctl -w vm.nr_hugepages=1280
+$root sysctl -w vm.dirty_ratio=40
+$root sysctl -w vm.dirty_background_ratio=10
+$root sysctl -w vm.swappiness=10

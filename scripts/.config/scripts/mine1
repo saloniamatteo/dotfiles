@@ -1,0 +1,77 @@
+#!/bin/sh
+# this script will setup everything to start mining.
+
+# use doas if installed
+[ $(which doas) ] && root="doas" || root="sudo"
+
+# kill unnecessary services
+printf "\nKilling unnecessary services! \n\n"
+$root rc-service NetworkManager stop
+$root rc-service atd stop
+$root rc-service avahi-daemon stop
+$root rc-service backlight stop
+$root rc-service chrony stop
+$root rc-service cronie stop
+$root rc-service cupsd stop
+$root rc-service device-mapper stop
+$root rc-service dnsmasq stop
+$root rc-service elogind stop
+$root rc-service fcgiwrap stop
+$root rc-service gpm stop
+$root rc-service keymaps stop
+$root rc-service libvirt-guests stop
+$root rc-service libvirtd stop
+$root rc-service local stop
+$root rc-service loopback stop
+$root rc-service net.lo stop
+$root rc-service netmount stop
+$root rc-service nginx stop
+$root rc-service ntpd stop
+$root rc-service save-keymaps stop
+$root rc-service savetermencoding stop
+$root rc-service sshd stop
+$root rc-service swap stop
+$root rc-service sysklogd stop
+$root rc-service syslogd stop
+$root rc-service tlp stop
+$root rc-service udev stop
+$root rc-service udev-settle stop
+$root rc-service udev-trigger stop
+$root rc-service vmware-networks stop
+$root rc-service vmware-networks-configuration stop
+$root pkill accounts-daemon
+$root pkill adb
+$root pkill anacron
+$root pkill at-spi-bus-launcher
+$root pkill at-spi2-registryd
+$root pkill crond
+$root pkill dbus-daemon
+$root pkill dnsmasq
+$root pkill gitstatusd-linu
+$root pkill gpg-agent
+$root pkill gvfsd
+$root pkill polkitd
+$root pkill pulseaudio
+$root pkill python3
+$root pkill ssh-agent
+$root pkill udev
+$root pkill udevd
+$root pkill vmware-tray
+
+# Start inet service
+$root rc-service net.wlp3s0 start
+
+# Decrease priority of processes
+# Get list of processes
+for pid in $(ps ax -o pid=); do
+	# Set process affinity to 0x2 and nice to 19
+	# (0x55 ?)
+	$root schedtool -a 0x2 -n 19 $pid
+done
+
+# increase performance
+printf "\n"
+~/.config/scripts/inc-perf
+
+# warn user
+echo "Ready! "

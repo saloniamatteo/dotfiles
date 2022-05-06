@@ -1,0 +1,25 @@
+#!/bin/sh
+root=doas
+# increase cpu performance
+printf "\nDecreasing CPU performance! \n\n"
+# enable Turbo Boost
+$root x86_energy_perf_policy --turbo-enable 0
+# apply undervolt (make sure to set values to 0!)
+$root intel-undervolt apply
+# set governor to performance
+$root x86_energy_perf_policy power
+$root cpupower frequency-set -g powersave
+# increase frequency
+$root cpupower frequency-set -f 24000000
+$root cpupower -c all set -b 15
+$root c2ctl 0-3 -e
+$root c2ctl 0 30 30
+$root c2ctl 1 30 30
+$root c2ctl 2 30 30
+$root c2ctl 3 30 30
+$root c2ctl 4 30 30
+$root c2ctl 5 30 30
+$root c2ctl 6 30 30
+$root c2ctl 7 30 30
+# set fan speed to 7
+echo "level auto" | $root tee /proc/acpi/ibm/fan

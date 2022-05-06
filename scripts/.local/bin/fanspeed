@@ -1,0 +1,15 @@
+#!/bin/bash
+# get fan speed
+
+speed=$(cat /proc/acpi/ibm/fan | grep level | head -n 1 | awk '{print $2}')
+
+printf "💨"
+
+if [ "$speed" = "auto" ]; then
+	printf " a"
+else if [ "$speed" = "disengaged" ]; then
+	printf " max"
+else
+	printf " $speed"
+fi
+fi
