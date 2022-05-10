@@ -21,7 +21,7 @@ function get_root() {
 	else if ! [ -z $(which sudo) ]; then
 		root=sudo
 	else
-		printf "$REDBG_BOLD[ERROR] Unable to find doas and/or sudo! $ENDCOL\n" && exit 1
+		printf "$REDBG_BOLD[ERROR] Unable to find doas and/or sudo! $ENDCOL\n" && return 1
 	fi
 	fi
 }
