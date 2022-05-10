@@ -15,14 +15,16 @@ ENDCOL="\e[0m"
 [ "$EUID" -eq 0 ] && printf "$REDBG_BOLD[ERROR] Do not run this script as root! $ENDCOL\n" && exit 1
 
 # Check if we have to use "sudo" or "doas".
-if ! [ -z $(which doas) ]; then
-	root=doas 
-else if ! [ -z $(which sudo) ]; then
-	root=sudo
-else
-	printf "$REDBG_BOLD[ERROR] Unable to find doas and/or sudo! Exiting... $ENDCOL\n" && exit 1
-fi
-fi
+function get_root() {
+	if ! [ -z $(which doas) ]; then
+		root=doas 
+	else if ! [ -z $(which sudo) ]; then
+		root=sudo
+	else
+		printf "$REDBG_BOLD[ERROR] Unable to find doas and/or sudo! $ENDCOL\n" && exit 1
+	fi
+	fi
+}
 
 printf "
  ____        _             _       
@@ -177,6 +179,8 @@ function __gentoopkgs_savetofile() {
 }
 
 function install_pkgs_gentoo() {
+get_root || main
+
 printf "
   ____            _              
  / ___| ___ _ __ | |_ ___   ___  
@@ -226,6 +230,8 @@ done
 }
 
 function install_pkgs_arch() {
+get_root || main
+
 printf "
     _             _        ___         _   _      
    / \   _ __ ___| |__    / / \   _ __| |_(_)_  __
@@ -335,6 +341,8 @@ function __gentoofonts_savetofile() {
 }
 
 function install_fonts_gentoo {
+get_root || main
+
 printf "
   ____            _              
  / ___| ___ _ __ | |_ ___   ___  
@@ -374,6 +382,8 @@ done
 }
 
 function install_fonts_arch() {
+get_root || main
+
 printf "
     _             _        ___         _   _      
    / \   _ __ ___| |__    / / \   _ __| |_(_)_  __
@@ -449,6 +459,8 @@ function __gentoocputools_savetofile() {
 }
 
 function install_cputools_gentoo {
+get_root || main
+
 printf "
   ____            _              
  / ___| ___ _ __ | |_ ___   ___  
@@ -500,6 +512,8 @@ done
 }
 
 function install_cputools_arch() {
+get_root || main
+
 printf "
     _             _        ___         _   _      
    / \   _ __ ___| |__    / / \   _ __| |_(_)_  __
@@ -594,7 +608,7 @@ while true; do
 
 			 printf "$BLUEBG_BOLD[NOTICE] Installing BLE.sh...$ENDCOL\n" \
 			 && LASTDIR="$(pwd)" \
-			 && cd $HOME/Documents && mkdir -p 'software' \
+			 && mkdir -p $HOME/Documents/software && cd $HOME/Documents/software \
 			 && git clone --recursive https://github.com/akinomyoga/ble.sh.git \
 			 && make -j$(nproc) -C ble.sh install PREFIX=~/.local && cd $LASTDIR \
 			 && printf "$BLUEBG_BOLD[SUCCESS] Successfully installed BLE.sh. $ENDCOL\n" \
@@ -620,6 +634,8 @@ done
 }
 
 function setup_st() {
+get_root || main
+
 printf "
      _   
  ___| |_ 
@@ -641,6 +657,8 @@ $BOLD_ULINE Build & Install st (suckless terminal) $ENDCOL
 }
 
 function setup_dwm() {
+get_root || main
+
 printf "
      _                    
   __| |_      ___ __ ___  
@@ -661,6 +679,8 @@ $BOLD_ULINE Build & Install dwm (dynamic window manager) $ENDCOL
 }
 
 function setup_dmenu() {
+get_root || main
+
 printf "
      _                            
   __| |_ __ ___   ___ _ __  _   _ 
@@ -681,6 +701,8 @@ $BOLD_ULINE Build & Install dmenu $ENDCOL
 }
 
 function setup_slock() {
+get_root || main
+
 printf "
      _            _    
  ___| | ___   ___| | __
