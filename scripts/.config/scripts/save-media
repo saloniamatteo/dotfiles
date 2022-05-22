@@ -1,0 +1,50 @@
+#!/bin/bash
+# Download media (videos, songs) using youtube-dl
+# Usage: ./save-media $URL_TO_DOWNLOAD
+
+# Check if we have a url
+if [ -z $1 ]; then
+	echo "Usage: $0 <url>"
+	exit 1
+fi
+
+url="$1"
+ytdl_cmd="yt-dlp"
+save_loc="/sdcard/Download/youtube-dl"
+
+# Check if $HOME/Music exists (same as ~/Music)
+[ ! -d "$save_loc" ] && mkdir "$save_loc"
+
+
+dl_song() {
+	$ytdl_cmd --sponsorblock-remove all -x --embed-thumbnail --audio-format mp3 -f bestaudio --audio-quality 0 -c -i "$url" --cookies $HOME/cookies -o "$save_loc/%(title)s.%(ext)s" 
+}
+
+dl_video() {
+	$ytdl_cmd --sponsorblock-remove all -c -i "$url" --audio-quality 0 -f mp4 --cookies $HOME/cookies -o "$save_loc/%(title)s.%(ext)s"
+}
+
+# show a list of options
+echo "Choose an option:"
+echo "1) Download and save as mp3"
+echo "2) Download and save as mp4"
+printf "> "
+read answer
+
+case $answer in
+	1)
+		# download as song/mp3
+		dl_song
+		;;
+
+	2)
+		# download as video/mp4
+		dl_video
+		;;
+
+	*)
+		# download as song/mp3
+		echo "Input not understood, defaulting to 1..."
+		dl_song
+		;;
+esac
