@@ -277,7 +277,7 @@ $BOLD_ULINE Setting up vim-plug and installing Vim plugins... $ENDCOL
 	fi
 
 	# Copy vim configurations
-	stow --adopt -v -t $HOME vim
+	stow -v -t $HOME vim
 
 	# Now we can proceed to install vim-plug
 	curl -fLo $HOME/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
@@ -590,7 +590,7 @@ function __config_ask_action() {
 
 function _stow() {
 	echo "Stowing $@..."
-	stow --verbose -t $HOME $@
+	stow -v -t $HOME $@
 	echo "Done!"
 }
 
