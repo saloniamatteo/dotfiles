@@ -38,6 +38,8 @@ set mouse=a
 set go=a
 " Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
 set splitbelow splitright
+" Set terminal title to filename
+set title titlestring=
 " }}}
 
 " OmniCompletion {{{
@@ -89,9 +91,11 @@ set foldlevelstart=10
 " }}}
 
 " Remaps {{{
-"
 " NOTE: <CR> means line break/enter
-"
+
+" Set spell check to <leader>o (\o; orthography)
+map <leader>o :setlocal spell!<CR>
+
 " Clipboard {{{
 " NOTE: needs gVim or neoVim for clipboard capabilities
 " Using CTRL+C, copy the text to global clipboard and active selection
@@ -123,9 +127,6 @@ noremap <C-p> :tabp<CR>
 noremap <C-x> :tabclose<CR>
 " }}}
 
-" Set spell check to <leader>o (\o; orthography)
-map <leader>o :setlocal spell!<CR>
-
 " Cscope {{{
 " \fs: Find this C symbol
 nnoremap <leader>fs :call CscopeFind('s', expand('<cword>'))<CR>
@@ -145,6 +146,15 @@ nnoremap <leader>ff :call CscopeFind('f', expand('<cword>'))<CR>
 nnoremap <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
 " }}}
 
+" listtrans.vim {{{
+nmap ;l <Plug>ListtransToggle
+vmap ;l <Plug>ListtransToggleVisual
+" }}}
+
+" Vim-vmath {
+vmap <expr> ++ VMATH_YankAndAnalyse()
+nmap        ++ vip++
+" }
 " }}}
 
 " Plugins {{{
@@ -163,6 +173,14 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'itchyny/lightline.vim'
 Plug 'sainnhe/lightline_foobar.vim'
 Plug 'delphinus/lightline-delphinus'
+" Git integration
+Plug 'lewis6991/gitsigns.nvim'
+" Show indentation
+Plug 'lukas-reineke/indent-blankline.nvim'
+" -------------------- "
+"  Better Navigation
+"  Vim matchup (better % navigation)
+Plug 'andymass/vim-matchup'
 " -------------------- "
 " Code completion
 " NOTE: install `python3-venv`, `python3`, `nvim`, `sqlite`
@@ -171,6 +189,28 @@ Plug 'delphinus/lightline-delphinus'
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
 Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
+" -------------------- "
+" Miscellaneous utilities
+" Vim-autoswap
+" NOTE: install `wmctrl` on Linux; requires X11 to be running
+" For more info, see project page
+Plug 'gioele/vim-autoswap'
+" listtrans.vim -- toggle a sentence to a comma-separated list (and viceversa)
+Plug 'schoettl/listtrans.vim'
+" Vim-vmath -- visual math
+" Select some numbers, and press "++", the plugin will show
+" the sum, average, minimum, and maximum.
+" These will be accessible from the registers denoted by
+" the highlighted letter in each result:
+"
+" Result	 Register
+" sum		 s
+" average	 a
+" minimum	 n
+" maximum	 x
+" num. of items  c
+" range		 r
+Plug 'nixon/vim-vmath'
 call plug#end()
 " }}}
 
@@ -196,6 +236,12 @@ lua require("coq_3p") {
 	\ { src = "bc", short_name = "MATH", precision = 6 },
 	\ { src = "figlet", short_name = "BIG" },
 \ }
+
+" Gitsigns
+lua require("gitsigns").setup();
+
+" Indentation
+lua require("indent_blankline").setup();
 
 " lightline-delphinus options
 let g:lightline_delphinus_use_powerline_glyphs = 1
@@ -263,14 +309,13 @@ endfunction
 " }}}
 
 " Spell-checking {{{
-
-" enable spell-checking
+" Enable spell-checking
 set nospell
 
-" set spell-checking language to en_US
+" Set spell-checking language to en_US
 set spelllang=en_us
 
-" enable word completion
+" Enable word completion
 set complete+=kspell
 set wildmode=longest,list,full
 
