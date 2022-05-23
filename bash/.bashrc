@@ -53,6 +53,28 @@ export NNN_BMS="d:$HOME/Documents;D:$HOME/Downloads;h:$HOME;m:$HOME/Music;p:$HOM
 export NNN_FIFO="/tmp/nnn.fifo"
 export NNN_PLUG="d:diffs;e:suedit;f:fixname;i:imgview;m:mp3conv;n:bulknew;p:picker;t:preview-tui;u:getplugs;v:preview-tabbed"
 
+# Xauthority
+export XAUTHORITY=$HOME/.Xauthority
+
+# Surfraw
+export SURFRAW_text_browser="/usr/bin/elinks"
+export SURFRAW_graphical=yes
+
+# set dbus for remote SSH connections
+if [ -n "$SSH_CLIENT" -a -n "$DISPLAY" ]; then
+    machine_id=$(LANGUAGE=C hostnamectl|grep 'Machine ID:'| sed 's/^.*: //')
+    x_display=$(echo $DISPLAY|sed 's/^.*:\([0-9]\+\)\(\.[0-9]\+\)*$/\1/')
+    dbus_session_file="$HOME/.dbus/session-bus/${machine_id}-${x_display}"
+    if [ -r "$dbus_session_file" ]; then
+            export $(grep '^DBUS.*=' "$dbus_session_file")
+            # check if PID still running, if not launch dbus
+            ps $DBUS_SESSION_BUS_PID | tail -1 | grep dbus-daemon >& /dev/null
+            [ "$?" != "0" ] && export $(dbus-launch) >& /dev/null
+    else
+            export $(dbus-launch) >& /dev/null
+    fi
+fi
+
 #> FUNCTIONS
 
 # Send mail from terminal
@@ -92,6 +114,10 @@ qrencode() {
 # Uninstall APKs on android phone using ADB
 rm-apk() {
 	adb uninstall --user 0 "$1"
+}
+
+rm-apk-safe() {
+	adb shell cmd package uninstall -k "$1"
 }
 
 # Download a song
