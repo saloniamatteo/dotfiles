@@ -31,6 +31,23 @@ export LC_TELEPHONE="it_IT.UTF-8"
 export LC_MEASUREMENT="it_IT.UTF-8"
 export LC_IDENTIFICATION="it_IT.UTF-8"
 
+# Colored man pages (& less colors)
+export LESS_TERMCAP_mb=$(tput bold; tput setaf 2) # green
+export LESS_TERMCAP_md=$(tput bold; tput setaf 3) # yellow
+export LESS_TERMCAP_me=$(tput sgr0)
+export LESS_TERMCAP_so=$(tput bold; tput setaf 3; tput setab 4) # yellow on blue
+export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
+export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 7) # white
+export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
+export LESS_TERMCAP_mr=$(tput rev)
+export LESS_TERMCAP_mh=$(tput dim)
+export LESS_TERMCAP_ZN=$(tput ssubm)
+export LESS_TERMCAP_ZV=$(tput rsubm)
+export LESS_TERMCAP_ZO=$(tput ssupm)
+export LESS_TERMCAP_ZW=$(tput rsupm)
+export GROFF_NO_SGR=1         # For Konsole and Gnome-terminal
+
+
 # Add $HOME/.local/bin and $HOME/.config/scripts
 # to PATH so any script in that directory is executable
 export PATH="$HOME/.local/bin:$HOME/.config/scripts:$PATH"
@@ -140,7 +157,9 @@ tomp3() {
 
 # Convert any supported file to mp4
 tomp4() {
-	ffmpeg -i "$1" -codec copy "$file.mp4"
+	extension="${1##*.}"
+	ffmpeg -i "$1" -codec copy "${1/$extension/mp4}"
+	rm "$1"
 }
 
 #< END FUNCTIONS
@@ -168,17 +187,6 @@ fi
 #< END SOURCES
 
 #> OTHERS
-# Check if running in a TTY, and appropriately modify vim's color settings
-if [[ "$TERM" =~ "linux" ]]; then
-	sed -in 's/set termguicolors/set notermguicolors/' ~/.vimrc
-	setfont ter-u16b.psf.gz
-else if [[ "$TERM" =~ "screen-256color" || "$TERM" =~ "dvtm-256color" ]]; then
-	sed -in 's/set termguicolors/set notermguicolors/' ~/.vimrc
-else
-	sed -in 's/set notermguicolors/set termguicolors/' ~/.vimrc
-fi
-fi
-
 # If we're not in dvtm, launch nnn using dvtm
 if [[ "$TERM" = "dvtm-256color" ]]; then
 	alias n="nnn -e"

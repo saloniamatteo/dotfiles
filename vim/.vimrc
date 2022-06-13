@@ -163,8 +163,8 @@ nmap        ++ vip++
 call plug#begin('~/.vim/plugged')
 " -------------------- "
 " Color schemes
-" TokyoNight
-Plug 'folke/tokyonight.nvim'
+" Dracula
+Plug 'dracula/vim'
 " -------------------- "
 " UI
 " Vim dev-icons
@@ -218,11 +218,12 @@ call plug#end()
 
 " set color scheme to dogrun
 " this line will be modified if running in a TTY
-colorscheme tokyonight
+colorscheme dracula
 
-" use terminal's colors
-" this line will be modified if running in a TTY
-set termguicolors
+" use terminal colors if we have truecolor support
+if (has("termguicolors"))
+  set termguicolors
+endif
 
 " }}}
 
@@ -258,7 +259,7 @@ let g:cscope_silent = 1
 
 " lightline settings
 let g:lightline = {
-	\ 'colorscheme': 'tokyonight',
+	\ 'colorscheme': 'dracula',
 	\ 'component': {
 	\		'lineinfo': ' %3l:%-2v', 
 	\ },
