@@ -158,8 +158,7 @@ tomp3() {
 # Convert any supported file to mp4
 tomp4() {
 	extension="${1##*.}"
-	ffmpeg -i "$1" -codec copy "${1/$extension/mp4}"
-	rm "$1"
+	ffmpeg -i "$1" -codec copy "${1/$extension/mp4}" && rm "$1"
 }
 
 #< END FUNCTIONS

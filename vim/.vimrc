@@ -157,6 +157,11 @@ nmap        ++ vip++
 " }
 " }}}
 
+" Plugin preload options {{{
+" Disable vim-polyglot auto-indentation
+let g:polyglot_disabled = ['sensible']
+" }}}
+
 " Plugins {{{
 " vim plug: https://github.com/junegunn/vim-plug
 " install packages by running :PlugInstall inside Vim
@@ -177,6 +182,8 @@ Plug 'delphinus/lightline-delphinus'
 Plug 'lewis6991/gitsigns.nvim'
 " Show indentation
 Plug 'lukas-reineke/indent-blankline.nvim'
+" Better syntax
+Plug 'sheerun/vim-polyglot'
 " -------------------- "
 "  Better Navigation
 "  Vim matchup (better % navigation)
