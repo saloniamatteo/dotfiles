@@ -587,7 +587,7 @@ while true; do
 
 	# Parse action
 	case "$CONFIG_ACTION" in
-		 1) for f in "audacious bash dunst fontconfig gpg gtk htop neofetch nnn picom rofi scripts vim wallpapers X"; _cp $f ;;
+		 1) for f in audacious bash dunst fontconfig gpg gtk htop neofetch nnn picom rofi scripts vim wallpapers X; do _cp $f; done ;;
 		 2) _cp audacious  ;;
 		 3)
 			 _cp bash;
