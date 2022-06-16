@@ -46,11 +46,6 @@ printf "
 # Show user available choices
 function print_action() {
 printf "
-Note: to copy configurations you have to
-make sure you install GNU Stow. This script
-automatically installs it when you select
-'Install recommended packages'.
-
 $BOLD_ULINE Choose action: $ENDCOL
  1) Install recommended packages (Gentoo)
  2) Install recommended packages (Arch/Artix)
@@ -100,7 +95,6 @@ function ask_action() {
 
 function __gentoopkgs_pkgs() {
 printf "
-app-admin/stow
 app-arch/zip
 app-editors/neovim
 app-misc/neofetch
@@ -220,7 +214,7 @@ done
 
 	sleep 5
 
-	$root emerge -a app-admin/stow app-arch/zip app-editors/neovim app-misc/neofetch app-shells/{bash,bash-completion,gentoo-bashcomp} \
+	$root emerge -a app-arch/zip app-editors/neovim app-misc/neofetch app-shells/{bash,bash-completion,gentoo-bashcomp} \
 	dev-vcs/git games-misc/fortune-mod lxde-base/lxappearance media-gfx/{imagemagick,scrot,sxiv} net-misc/curl sys-apps/mlocate \
 	sys-libs/ncurses sys-process/{cronie,htop} x11-libs/libXft \
 	x11-misc/{dmenu,dunst,hsetroot,rofi,picom,xdotool,xscreensaver,xsel,xsettingsd} \
@@ -249,13 +243,19 @@ $BOLD_ULINE Recommended packages installation $ENDCOL
 
 	sleep 5
 
-	$root pacman -S base-devel git stow zip neovim neofetch bash{,-completion} fortune-mod lxappearance imagemagick scrot sxiv curl \
+	$root pacman -S base-devel git zip neovim neofetch bash{,-completion} fortune-mod lxappearance imagemagick scrot sxiv curl \
 	mlocate ncurses cronie htop dmenu dunst hsetroot rofi picom xdotool xscreensaver xsel xsettingsd arc-icon-theme links \
 	&& printf "$BLUEBG_BOLD[SUCCESS] Successfully installed recommended packages! $ENDCOL\n" \
 	&& printf "Note: Neutral++ cursors have not been installed. Please install the AUR package:\n" \
 	&& printf "https://aur.archlinux.org/packages/xcursor-neutral++\n" \
 	|| printf "$REDBG_BOLD[ERROR] Installation of recommended packages (Arch/Artix) failed! $ENDCOL\n"
 
+}
+
+function _cp() {
+	echo "Copying $@..."
+	cp -r ./$1/.[^.]* $HOME
+	echo "Done!"
 }
 
 function setup_vim() {
@@ -268,16 +268,8 @@ __     ___
                      
 $BOLD_ULINE Setting up vim-plug and installing Vim plugins... $ENDCOL
 "
-
-	# First we make sure stow is installed.
-	if [ -z $(which stow) ]; then
-		printf "$REDBG_BOLD[ERROR] GNU Stow is not installed! $ENDCOL\n"
-		printf "$REDBG_BOLD[ERROR] Please install GNU Stow first. $ENDCOL\n"
-		break;
-	fi
-
 	# Copy vim configurations
-	stow -v -t $HOME vim
+	_cp vim
 
 	# Now we can proceed to install vim-plug
 	curl -fLo $HOME/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
@@ -588,12 +580,6 @@ function __config_ask_action() {
 	fi
 }
 
-function _stow() {
-	echo "Stowing $@..."
-	stow -v -t $HOME $@
-	echo "Done!"
-}
-
 function config_menu() {
 while true; do
 	__config_print_actions
@@ -601,32 +587,43 @@ while true; do
 
 	# Parse action
 	case "$CONFIG_ACTION" in
-		 1) _stow audacious bash dunst fontconfig gpg gtk htop neofetch nnn picom rofi scripts vim wallpapers X ;;
-		 2) _stow audacious  ;;
+		 1) for f in "audacious bash dunst fontconfig gpg gtk htop neofetch nnn picom rofi scripts vim wallpapers X"; _cp $f ;;
+		 2) _cp audacious  ;;
 		 3)
-			 _stow bash;
+			 _cp bash;
 
-			 printf "$BLUEBG_BOLD[NOTICE] Installing BLE.sh...$ENDCOL\n" \
-			 && LASTDIR="$(pwd)" \
-			 && mkdir -p $HOME/Documents/software && cd $HOME/Documents/software \
-			 && git clone --recursive https://github.com/akinomyoga/ble.sh.git \
-			 && make -j$(nproc) -C ble.sh install PREFIX=~/.local && cd $LASTDIR \
-			 && printf "$BLUEBG_BOLD[SUCCESS] Successfully installed BLE.sh. $ENDCOL\n" \
-			 || printf "$REDBG_BOLD[ERROR] Could not build/install BLE.sh! $ENDCOL\n"
+			 # Check if repo already exists
+			if [ -d $HOME/Documents/software/ble.sh ] {
+				printf "$BLUEBG_BOLD[NOTICE] Skipping git clone, already have repo...$ENDCOL\n" \
+
+				printf "$BLUEBG_BOLD[NOTICE] Installing BLE.sh...$ENDCOL\n" \
+				&& LASTDIR="$(pwd)" \
+				&& cd $HOME/Documents/software \
+				&& make -j$(nproc) -C ble.sh install PREFIX=~/.local && cd $LASTDIR \
+			 	&& printf "$BLUEBG_BOLD[SUCCESS] Successfully installed BLE.sh. $ENDCOL\n" \
+			} else {
+				printf "$BLUEBG_BOLD[NOTICE] Installing BLE.sh...$ENDCOL\n" \
+				&& LASTDIR="$(pwd)" \
+				&& mkdir -p $HOME/Documents/software && cd $HOME/Documents/software \
+				&& git clone --recursive https://github.com/akinomyoga/ble.sh.git \
+				&& make -j$(nproc) -C ble.sh install PREFIX=~/.local && cd $LASTDIR \
+				&& printf "$BLUEBG_BOLD[SUCCESS] Successfully installed BLE.sh. $ENDCOL\n" \
+				|| printf "$REDBG_BOLD[ERROR] Could not build/install BLE.sh! $ENDCOL\n"
+			 }
 			 ;;
-		 4) _stow dunst      ;;
-		 5) _stow fontconfig ;;
-		 6) _stow gpg        ;;
-		 7) _stow gtk        ;;
-		 8) _stow htop       ;;
-		 9) _stow neofetch   ;;
-		10) _stow nnn        ;;
-		11) _stow picom      ;;
-		12) _stow rofi       ;;
-		13) _stow vim        ;;
-		14) _stow X          ;;
-		15) _stow scripts    ;;
-		16) _stow wallpapers ;;
+		 4) _cp dunst      ;;
+		 5) _cp fontconfig ;;
+		 6) _cp gpg        ;;
+		 7) _cp gtk        ;;
+		 8) _cp htop       ;;
+		 9) _cp neofetch   ;;
+		10) _cp nnn        ;;
+		11) _cp picom      ;;
+		12) _cp rofi       ;;
+		13) _cp vim        ;;
+		14) _cp X          ;;
+		15) _cp scripts    ;;
+		16) _cp wallpapers ;;
 		17) break            ;;
 		*) printf "Action numbers must go from 1 to 17!\n"; __config_ask_action ;;
 	esac
