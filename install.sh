@@ -593,7 +593,7 @@ while true; do
 			 _cp bash;
 
 			 # Check if repo already exists
-			if [ -d $HOME/Documents/software/ble.sh ] {
+			if [[ -d "$HOME/Documents/software/ble.sh" ]]; then
 				printf "$BLUEBG_BOLD[NOTICE] Skipping git clone, already have repo...$ENDCOL\n" \
 
 				printf "$BLUEBG_BOLD[NOTICE] Installing BLE.sh...$ENDCOL\n" \
@@ -601,7 +601,7 @@ while true; do
 				&& cd $HOME/Documents/software \
 				&& make -j$(nproc) -C ble.sh install PREFIX=~/.local && cd $LASTDIR \
 			 	&& printf "$BLUEBG_BOLD[SUCCESS] Successfully installed BLE.sh. $ENDCOL\n" \
-			} else {
+			else
 				printf "$BLUEBG_BOLD[NOTICE] Installing BLE.sh...$ENDCOL\n" \
 				&& LASTDIR="$(pwd)" \
 				&& mkdir -p $HOME/Documents/software && cd $HOME/Documents/software \
@@ -609,7 +609,7 @@ while true; do
 				&& make -j$(nproc) -C ble.sh install PREFIX=~/.local && cd $LASTDIR \
 				&& printf "$BLUEBG_BOLD[SUCCESS] Successfully installed BLE.sh. $ENDCOL\n" \
 				|| printf "$REDBG_BOLD[ERROR] Could not build/install BLE.sh! $ENDCOL\n"
-			 }
+			fi
 			 ;;
 		 4) _cp dunst      ;;
 		 5) _cp fontconfig ;;
