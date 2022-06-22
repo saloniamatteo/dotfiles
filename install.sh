@@ -593,23 +593,25 @@ while true; do
 			 _cp bash;
 
 			 # Check if repo already exists
-			if [[ -d "$HOME/Documents/software/ble.sh" ]]; then
+			if [[ -d "$HOME/software/ble.sh" ]]; then
 				printf "$BLUEBG_BOLD[NOTICE] Skipping git clone, already have repo...$ENDCOL\n" \
-
-				printf "$BLUEBG_BOLD[NOTICE] Installing BLE.sh...$ENDCOL\n" \
-				&& LASTDIR="$(pwd)" \
-				&& cd $HOME/Documents/software \
-				&& make -j$(nproc) -C ble.sh install PREFIX=~/.local && cd $LASTDIR \
-			 	&& printf "$BLUEBG_BOLD[SUCCESS] Successfully installed BLE.sh. $ENDCOL\n" \
+				&& LASTDIR="$(pwd)"
 			else
-				printf "$BLUEBG_BOLD[NOTICE] Installing BLE.sh...$ENDCOL\n" \
+				printf "$BLUEBG_BOLD[NOTICE] Cloning git repo...$ENDCOL\n" \
 				&& LASTDIR="$(pwd)" \
-				&& mkdir -p $HOME/Documents/software && cd $HOME/Documents/software \
-				&& git clone --recursive https://github.com/akinomyoga/ble.sh.git \
+				&& mkdir -p $HOME/software && cd $HOME/software \
+				&& git clone --recursive --depth=1 https://github.com/akinomyoga/ble.sh \
+				|| printf "$REDBG_BOLD[ERROR] Could not clone git repo! $ENDCOL\n"
+			fi
+
+			# Continue if repo exists
+			if [[ -d "ble.sh" ]]; then
+				printf "$BLUEBG_BOLD[NOTICE] Installing BLE.sh...$ENDCOL\n" \
 				&& make -j$(nproc) -C ble.sh install PREFIX=~/.local && cd $LASTDIR \
 				&& printf "$BLUEBG_BOLD[SUCCESS] Successfully installed BLE.sh. $ENDCOL\n" \
 				|| printf "$REDBG_BOLD[ERROR] Could not build/install BLE.sh! $ENDCOL\n"
 			fi
+
 			 ;;
 		 4) _cp dunst      ;;
 		 5) _cp fontconfig ;;
