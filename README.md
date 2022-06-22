@@ -17,7 +17,7 @@
 ***
 
 ## Donate
-Support this project: https://saloniamatteo.top/donate.html
+Support this project: https://salonia.it/donate.html
 
 ## Cloning note
 NOTE! Please clone this repository with the following command:
