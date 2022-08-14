@@ -123,6 +123,7 @@ x11-misc/xscreensaver
 x11-misc/xsel
 x11-misc/xsettingsd
 x11-themes/arc-icon-theme
+x11-themes/arc-theme
 x11-themes/neutral-xcursors
 www-client/links
 
@@ -218,7 +219,7 @@ done
 	dev-vcs/git games-misc/fortune-mod lxde-base/lxappearance media-gfx/{imagemagick,scrot,sxiv} net-misc/curl sys-apps/mlocate \
 	sys-libs/ncurses sys-process/{cronie,htop} x11-libs/libXft \
 	x11-misc/{dmenu,dunst,hsetroot,rofi,picom,xdotool,xscreensaver,xsel,xsettingsd} \
-	x11-themes/{arc-icon-theme,neutral-xcursors} www-client/links \
+	x11-themes/{arc-icon-theme,arc-theme,neutral-xcursors} www-client/links \
 	&& printf "$BLUEBG_BOLD[SUCCESS] Successfully installed recommended packages! $ENDCOL\n" \
 	|| printf "$REDBG_BOLD[ERROR] Installation of recommended packages (Gentoo) failed! $ENDCOL\n"
 }
@@ -244,7 +245,8 @@ $BOLD_ULINE Recommended packages installation $ENDCOL
 	sleep 5
 
 	$root pacman -S base-devel git zip neovim neofetch bash{,-completion} fortune-mod lxappearance imagemagick scrot sxiv curl \
-	mlocate ncurses cronie htop dmenu dunst hsetroot rofi picom xdotool xscreensaver xsel xsettingsd arc-icon-theme links \
+	mlocate ncurses cronie htop dmenu dunst hsetroot rofi picom xdotool xscreensaver xsel xsettingsd \
+	arc-icon-theme arc-solid-gtk-theme links \
 	&& printf "$BLUEBG_BOLD[SUCCESS] Successfully installed recommended packages! $ENDCOL\n" \
 	&& printf "Note: Neutral++ cursors have not been installed. Please install the AUR package:\n" \
 	&& printf "https://aur.archlinux.org/packages/xcursor-neutral++\n" \
@@ -537,7 +539,7 @@ $BOLD_ULINE Choose which configuration to copy: $ENDCOL
  4) Dunst
  5) Fontconfig
  6) GPG
- 7) GTK
+ 7) GTK (dconf)
  8) Htop
  9) Neofetch
 10) nnn
@@ -587,7 +589,7 @@ while true; do
 
 	# Parse action
 	case "$CONFIG_ACTION" in
-		 1) for f in audacious bash dunst fontconfig gpg gtk htop neofetch nnn picom rofi scripts vim wallpapers X; do _cp $f; done ;;
+		 1) for f in audacious bash dunst fontconfig gpg dconf htop neofetch nnn picom rofi scripts vim wallpapers X; do _cp $f; done ;;
 		 2) _cp audacious  ;;
 		 3)
 			 _cp bash;
@@ -616,7 +618,7 @@ while true; do
 		 4) _cp dunst      ;;
 		 5) _cp fontconfig ;;
 		 6) _cp gpg        ;;
-		 7) _cp gtk        ;;
+		 7) _cp dconf      ;;
 		 8) _cp htop       ;;
 		 9) _cp neofetch   ;;
 		10) _cp nnn        ;;

@@ -1,0 +1,38 @@
+[net/connman/gtk]
+launch-to-tray=true
+status-icon-enabled=true
+
+[org/gnome/desktop/interface]
+cursor-size=24
+cursor-theme='Neutral++_White'
+enable-animations=true
+font-name='Iosevka 12'
+gtk-theme='Arc'
+icon-theme='Arc'
+monospace-font-name='FuraCode NF 12'
+scaling-factor=uint32 2
+toolbar-style='text'
+
+[org/gnome/desktop/privacy]
+disable-microphone=false
+
+[org/gnome/desktop/wm/preferences]
+button-layout='icon:minimize,maximize,close'
+
+[org/gtk/settings/file-chooser]
+date-format='regular'
+location-mode='path-bar'
+show-hidden=false
+show-size-column=true
+show-type-column=true
+sidebar-width=222
+sort-column='name'
+sort-directories-first=true
+sort-order='ascending'
+type-format='category'
+window-position=(9, 0)
+window-size=(1338, 712)
+
+[org/virt-manager/virt-manager/connections]
+autoconnect=['qemu:///system']
+uris=['qemu:///system']

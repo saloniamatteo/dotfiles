@@ -74,11 +74,9 @@ for my build of dwm & dwmblocks. If you need any help, go there.
 
 ## Others (not included)
 - Browser: [LibreWolf](https://librewolf.net)
-- Grub theme: [Gentoo Silence](https://github.com/saloniamatteo/gentoo-silence), [Artix Silence](https://aur.archlinux.org/packages/artix-silence-grub-theme-git)
-- GTK dark theme: [matcha-dark-azul](https://github.com/vinceliuice/matcha-gtk-theme)
-- Icon theme: [Arc](https://github.com/horst3180/arc-icon-theme)
-- Simple MTP device manager (mount android devices): [`simple-mtpfs`](https://wiki.archlinux.org/index.php/Media_Transfer_Protocol#simple-mtpfs)
-- Ncurses disk usage utility: [`ncdu`](https://dev.yorhel.nl/ncdu)
+- Grub theme: [Gentoo Silence](https://github.com/saloniamatteo/gentoo-silence)
+- GTK theme: [Arc Theme](https://github.com/jnsh/arc-theme)
+- Icon theme: [Arc Icon Theme](https://github.com/horst3180/arc-icon-theme)
 
 NOTE: If you want to change GTK's graphical settings on dwm,
 such as the cursor theme or the icon theme, use a program like `lxappearance`.
@@ -101,8 +99,6 @@ Here's a list of the Firefox addons I use:
 
 ## Terminal
 - Terminal: `st` ([My build](https://github.com/saloniamatteo/st))
-- Terminal file manager: `nnn`
-- Get system info: `neofetch`
 
 ***
 
