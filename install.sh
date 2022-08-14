@@ -125,6 +125,7 @@ x11-misc/xsettingsd
 x11-themes/arc-icon-theme
 x11-themes/arc-theme
 x11-themes/neutral-xcursors
+x11-themes/xfwm4-themes
 www-client/links
 
 "
@@ -219,7 +220,7 @@ done
 	dev-vcs/git games-misc/fortune-mod lxde-base/lxappearance media-gfx/{imagemagick,scrot,sxiv} net-misc/curl sys-apps/mlocate \
 	sys-libs/ncurses sys-process/{cronie,htop} x11-libs/libXft \
 	x11-misc/{dmenu,dunst,hsetroot,rofi,picom,xdotool,xscreensaver,xsel,xsettingsd} \
-	x11-themes/{arc-icon-theme,arc-theme,neutral-xcursors} www-client/links \
+	x11-themes/{arc-icon-theme,arc-theme,neutral-xcursors,xfwm4-themes} www-client/links \
 	&& printf "$BLUEBG_BOLD[SUCCESS] Successfully installed recommended packages! $ENDCOL\n" \
 	|| printf "$REDBG_BOLD[ERROR] Installation of recommended packages (Gentoo) failed! $ENDCOL\n"
 }
@@ -246,7 +247,7 @@ $BOLD_ULINE Recommended packages installation $ENDCOL
 
 	$root pacman -S base-devel git zip neovim neofetch bash{,-completion} fortune-mod lxappearance imagemagick scrot sxiv curl \
 	mlocate ncurses cronie htop dmenu dunst hsetroot rofi picom xdotool xscreensaver xsel xsettingsd \
-	arc-icon-theme arc-solid-gtk-theme links \
+	arc-icon-theme arc-solid-gtk-theme xfwm4-themes links \
 	&& printf "$BLUEBG_BOLD[SUCCESS] Successfully installed recommended packages! $ENDCOL\n" \
 	&& printf "Note: Neutral++ cursors have not been installed. Please install the AUR package:\n" \
 	&& printf "https://aur.archlinux.org/packages/xcursor-neutral++\n" \
