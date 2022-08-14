@@ -16,6 +16,7 @@ $root rc-service cupsd stop
 $root rc-service device-mapper stop
 $root rc-service dnsmasq stop
 $root rc-service elogind stop
+$root rc-service emacs.user stop # CHANGEME: replace user with username
 $root rc-service fcgiwrap stop
 $root rc-service gpm stop
 $root rc-service keymaps stop
@@ -34,8 +35,6 @@ $root rc-service swap stop
 $root rc-service sysklogd stop
 $root rc-service syslogd stop
 $root rc-service tlp stop
-$root rc-service udev stop
-$root rc-service udev-settle stop
 $root rc-service udev-trigger stop
 $root rc-service vmware-networks stop
 $root rc-service vmware-networks-configuration stop
@@ -54,20 +53,20 @@ $root pkill polkitd
 $root pkill pulseaudio
 $root pkill python3
 $root pkill ssh-agent
-$root pkill udev
-$root pkill udevd
 $root pkill vmware-tray
 
 # Start inet service
-$root rc-service net.wlp3s0 start
+$root rc-service net.wlan0 start
 
 # Decrease priority of processes
 # Get list of processes
 for pid in $(ps ax -o pid=); do
-	# Set process affinity to 0x2 and nice to 19
-	# (0x55 ?)
-	$root schedtool -a 0x2 -n 19 $pid
+	# Set process affinity to 0x55 and nice to 15
+	$root schedtool -a 0x55 -n 15 $pid
 done
+
+# Unload unneded modules
+$root modprobe -r at24 fuse sr_mod cdrom joydev kvm_intel lpc_ich mousedev psmouse snd_ctl_led tun uvcvideo
 
 # increase performance
 printf "\n"

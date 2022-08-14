@@ -7,6 +7,7 @@ printf "Increasing CPU performance! \n\n"
 # set fan speed to 7
 echo "level 7" | $root tee /proc/acpi/ibm/fan
 # apply undervolt
+$root rc-service intel-undervolt-loop start
 $root intel-undervolt apply
 # increase frequency
 $root cpupower -c all set -b 0
@@ -30,3 +31,5 @@ $root sysctl -w vm.nr_hugepages=1280
 $root sysctl -w vm.dirty_ratio=40
 $root sysctl -w vm.dirty_background_ratio=10
 $root sysctl -w vm.swappiness=10
+# set MSR values
+$root randomx_boost.sh

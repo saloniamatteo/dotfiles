@@ -1,0 +1,64 @@
+--- inc-perf	2022-04-20 23:22:49.547379405 +0200
++++ /home/matteo/.config/scripts/inc-perf	2022-06-24 14:25:35.268721622 +0200
+@@ -7,6 +7,7 @@
+ # set fan speed to 7
+ echo "level 7" | $root tee /proc/acpi/ibm/fan
+ # apply undervolt
++$root rc-service intel-undervolt-loop start
+ $root intel-undervolt apply
+ # increase frequency
+ $root cpupower -c all set -b 0
+@@ -30,3 +31,5 @@
+ $root sysctl -w vm.dirty_ratio=40
+ $root sysctl -w vm.dirty_background_ratio=10
+ $root sysctl -w vm.swappiness=10
++# set MSR values
++$root randomx_boost.sh
+--- mine1	2022-04-20 23:22:49.547379405 +0200
++++ /home/matteo/.config/scripts/mine1	2022-07-25 11:52:37.758279131 +0200
+@@ -16,6 +16,8 @@
+ $root rc-service device-mapper stop
+ $root rc-service dnsmasq stop
+ $root rc-service elogind stop
++$root rc-service emacs.root stop
++$root rc-service emacs.matteo stop
+ $root rc-service fcgiwrap stop
+ $root rc-service gpm stop
+ $root rc-service keymaps stop
+@@ -34,8 +36,6 @@
+ $root rc-service sysklogd stop
+ $root rc-service syslogd stop
+ $root rc-service tlp stop
+-$root rc-service udev stop
+-$root rc-service udev-settle stop
+ $root rc-service udev-trigger stop
+ $root rc-service vmware-networks stop
+ $root rc-service vmware-networks-configuration stop
+@@ -54,21 +54,21 @@
+ $root pkill pulseaudio
+ $root pkill python3
+ $root pkill ssh-agent
+-$root pkill udev
+-$root pkill udevd
+ $root pkill vmware-tray
+ 
+ # Start inet service
+-$root rc-service net.wlp3s0 start
++$root rc-service net.wlan0 start
+ 
+ # Decrease priority of processes
+ # Get list of processes
+ for pid in $(ps ax -o pid=); do
+-	# Set process affinity to 0x2 and nice to 19
+-	# (0x55 ?)
+-	$root schedtool -a 0x2 -n 19 $pid
++	# Set process affinity to 0x55 and nice to 15
++	$root schedtool -a 0x55 -n 15 $pid
+ done
+ 
++# Unload unneded modules
++$root modprobe -r at24 fuse sr_mod cdrom joydev kvm_intel lpc_ich mousedev psmouse snd_ctl_led tun uvcvideo
++
+ # increase performance
+ printf "\n"
+ ~/.config/scripts/inc-perf
