@@ -4,9 +4,9 @@
 
 case $BLOCK_BUTTON in
 	1) setsid -f "$TERMINAL" -e pulsemixer ;;
-	2) pamixer -t ;;
-	4) pamixer --allow-boost -i 1 ;;
-	5) pamixer --allow-boost -d 1 ;;
+	2) pulsemixer --id sink-0 --toggle-mute ;;
+	4) pulsemixer --id sink-0 --change-volume +5 ;;
+	5) pulsemixer --id sink-0 --chang-volume -5 ;;
 	3) notify-send "📢 Volume module" "\- Shows volume 🔊, 🔇 if muted.
 - Middle click to mute.
 - Scroll to change." ;;
