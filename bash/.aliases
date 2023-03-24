@@ -1,45 +1,47 @@
+# -*- bash -*-
+
 # use doas instead of sudo
-[ $(which doas) ] && alias sudo="doas"
+[ $(which doas 2>/dev/null) ] && alias sudo="doas"
 
 # use neovim instead of vim if nvim is installed
-[ $(which nvim) ] && alias vim="nvim" && alias vmi="nvim" || alias vmi = "vim"
+[ $(which nvim 2>/dev/null) ] && alias vim="nvim" && alias vmi="nvim" || alias vmi = "vim"
 
 # make programs verbose
 alias \
 	cp="cp -v" \
+	less='less -RS' \
 	ln="ln -v" \
+	ls="ls --group-directories-first --color=always" \
 	mv="mv -v" \
 	rm="rm -v" \
 	rsync="rsync -v" \
-	su="su -l" \
-	LS="sl -alc" \
 	sl="sl -alc" \
-	less='less -RS' \
-	ls="ls --group-directories-first --color=always"
+	su="su -l"
 
 # add color support to grep and others
 alias \
-	grep='grep --color=auto' \
-	vdir='vdir --color=always' \
-	egrep='egrep --color=always' \
-	fgrep='fgrep --color=always'
 	dir='dir --color=always' \
+	egrep='grep -E --color=always' \
+	fgrep='grep -F --color=always' \
+	grep='grep --color=auto' \
+	vdir='vdir --color=always'
 
 # miscellaneous
 alias \
+	brasero="dbus-launch brasero" \
 	debug="valgrind --tool=memcheck --leak-check=yes --leak-check=full --show-reachable=yes --leak-resolution=high --trace-children=yes --track-origins=yes -s" \
-	java="/opt/openjdk-jre-bin-11.0.13_p8/bin/java" \
+	e="emacsclient -cs /tmp/emacs$UID/server -a 'emacs'" \
+	emacs="emacsclient -cs /tmp/emacs$UID/server -a 'emacs'" \
+	firefox="librewolf" \
+	java="/opt/openjdk-bin-17/bin/java" \
 	mail="neomutt" \
 	mpv-hi="mpv --opengl-glfinish=yes --opengl-swapinterval=0 --vo=gpu --hwdec=vaapi --opengl-pbo" \
 	neofetch="neofetch --color_blocks off" \
-	n="nnn -e" \
-	nnn="nnn -e" \
 	poweroff='doas /sbin/poweroff' \
 	reboot='doas /sbin/reboot' \
 	rot13='tr a-zA-Z n-za-mN-ZA-M' \
-	steam="flatpak run com.valvesoftware.Steam" \
 	surf="tabbed -c surf -BNPTeg & disown" \
-	vimpager='/usr/share/vim/vim82/macros/less.sh' \
+	vimpager='/usr/share/vim/vim82/macros/less.sh'
 
 # Video4Linux2 virtual webcam settings
 # check out https://github.com/umlaeute/v4l2loopback/wiki/GStreamer for more
@@ -60,12 +62,5 @@ alias \
 
 # mining
 alias \
-	benchmark='doas ./randomx_booster.sh; doas xmrig --bench=1M --submit -t 4 --randomx-1gb-pages --cpu-no-yield --cpu-priority 5 --randomx-mode fast --asm intel --randomx-no-numa --no-color --cpu-affinity 0xFF -a rx/0' \
-	build-xmrig='cd ~/software/xmrig; mkdir build; cd build; rm -rf *; cmake -DCMAKE_BUILD_TYPE=Release -DWITH_CN_LITE=OFF -DWITH_CN_HEAVY=OFF -DWITH_CN_PICO=OFF -DWITH_CN_FEMTO=OFF -DWITH_ASTROBWT=OFF -DWITH_KAWPOW=OFF -DWITH_GHOSTRIDER=OFF -DWITH_NVML=OFF -DWITH_ADL=OFF -DWITH_SECURE_JIT=ON -DWITH_SSE4_1=ON -DWITH_HWLOC=ON -DWITH_TLS=ON -DWITH_OPENCL=OFF -DWITH_CUDA=OFF -DCMAKE_C_FLAGS="${CMAKE_C_FLAGS} -Ofast -pipe -march=haswell -mtune=haswell -fno-plt -falign-functions=32 -flto=4 -fgraphite-identity -floop-nest-optimize -fipa-pta -fno-semantic-interposition -fno-common -fno-math-errno -fno-trapping-math -fno-signed-zeros -fno-trapping-math -fassociative-math -freciprocal-math -fno-math-errno -ffinite-math-only -fno-rounding-math -fno-signaling-nans -fcx-limited-range -fexcess-precision=fast -fdevirtualize-at-ltrans" -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} ${CMAKE_C_FLAGS}" ..; cmake --build .; doas install -Dm775 xmrig /usr/bin/xmrig' \
-	mine-xmrig='doas ~matteo/software/xmrig/scripts/randomx_boost.sh; doas schedtool -a 0x255 -n -20 -e xmrig -o de.minexmr.com:4444 -u CHANGEME+180000 -k --rig-id matteo --randomx-1gb-pages --cpu-no-yield --cpu-priority 5 --randomx-mode fast --asm intel --randomx-no-numa --no-color --print-time 120 --cpu-affinity 0x255 -a rx/0 -t 4 --huge-pages-jit --argon2-impl=AVX2'
-
-# others
-alias \
-	indent-sm="indent -bad -bap -bbo -blf -br -brs -c33 -cbi0 -cd33 -ce -ci4 \
-			  -cli0 -cp33 -d0 -di1 -hnl -i8 -il1 -ip5 -l80 -lp -nbc -ncdb -ncs -nfca \
-			  -nfc1 -nsc -npcs -nprs -psl -saf -sai -saw -ss -sob -ts8 -ut" \
+	benchmark='doas xmrig --bench=1M --submit -t 4 --randomx-1gb-pages --cpu-no-yield --cpu-priority 5 --randomx-mode fast --asm intel --randomx-no-numa --no-color --cpu-affinity 0xFF -a rx/0' \
+	mine-xmrig='doas schedtool -a 0x255 -n -20 -e xmrig -o pool.minexmr.com:4444 -u CHANGEME+180000 -k --rig-id CHANGEME --randomx-1gb-pages --cpu-no-yield --cpu-priority 5 --randomx-mode fast --asm intel --randomx-no-numa --no-color --print-time 120 --cpu-affinity 0x255 -a rx/0 -t 4 --huge-pages-jit --argon2-impl=AVX2'
