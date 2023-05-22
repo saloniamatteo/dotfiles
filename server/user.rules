@@ -1,0 +1,175 @@
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### limit any 7777 0.0.0.0/0 any 0.0.0.0/0 in comment=535348
+-A ufw-user-input -p tcp --dport 7777 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 7777 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 15 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 7777 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 7777 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 7777 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 15 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 7777 -j ufw-user-limit-accept
+
+### tuple ### deny any 22 0.0.0.0/0 any 0.0.0.0/0 in comment=535348
+-A ufw-user-input -p tcp --dport 22 -j DROP
+-A ufw-user-input -p udp --dport 22 -j DROP
+
+### tuple ### limit any 25 0.0.0.0/0 any 0.0.0.0/0 in comment=506f7374666978
+-A ufw-user-input -p tcp --dport 25 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 25 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 25 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 25 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 25 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 25 -j ufw-user-limit-accept
+
+### tuple ### limit any 53 0.0.0.0/0 any 0.0.0.0/0 in comment=556e626f756e64
+-A ufw-user-input -p tcp --dport 53 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 53 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 53 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 53 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 53 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 53 -j ufw-user-limit-accept
+
+### tuple ### limit any 80 0.0.0.0/0 any 0.0.0.0/0 in comment=48545450
+-A ufw-user-input -p tcp --dport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 20 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 80 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 80 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 80 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 20 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 80 -j ufw-user-limit-accept
+
+### tuple ### limit any 443 0.0.0.0/0 any 0.0.0.0/0 in comment=4854545053
+-A ufw-user-input -p tcp --dport 443 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 443 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 20 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 443 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 443 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 443 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 20 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 443 -j ufw-user-limit-accept
+
+### tuple ### limit any 993 0.0.0.0/0 any 0.0.0.0/0 in comment=494d4150
+-A ufw-user-input -p tcp --dport 993 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 993 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 993 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 993 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 993 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 993 -j ufw-user-limit-accept
+
+### tuple ### limit any 8096 0.0.0.0/0 any 0.0.0.0/0 in comment=4a656c6c7966696e
+-A ufw-user-input -p tcp --dport 8096 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 8096 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 25 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 8096 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 8096 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 8096 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 25 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 8096 -j ufw-user-limit-accept
+
+### tuple ### limit any 14880 0.0.0.0/0 any 0.0.0.0/0 in comment=546f7272656e74
+-A ufw-user-input -p tcp --dport 14880 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 14880 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 14880 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 14880 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 14880 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 14880 -j ufw-user-limit-accept
+
+### tuple ### limit any 8000 0.0.0.0/0 any 0.0.0.0/0 in comment=526576616e6365642050617463686572
+-A ufw-user-input -p tcp --dport 8000 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 8000 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 20 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 8000 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 8000 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 8000 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 20 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 8000 -j ufw-user-limit-accept
+
+### tuple ### limit any 8001 0.0.0.0/0 any 0.0.0.0/0 in comment=51626974746f7272656e74
+-A ufw-user-input -p tcp --dport 8001 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 8001 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 20 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 8001 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 8001 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 8001 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 20 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 8001 -j ufw-user-limit-accept
+
+### tuple ### limit any 465 0.0.0.0/0 any 0.0.0.0/0 in comment=534d5450
+-A ufw-user-input -p tcp --dport 465 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 465 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 465 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 465 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 465 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 465 -j ufw-user-limit-accept
+
+### tuple ### limit any 587 0.0.0.0/0 any 0.0.0.0/0 in comment=506f7374666978
+-A ufw-user-input -p tcp --dport 587 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 587 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 587 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 587 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 587 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 587 -j ufw-user-limit-accept
+
+### tuple ### limit any 123 0.0.0.0/0 any 0.0.0.0/0 in comment=4e5450
+-A ufw-user-input -p tcp --dport 123 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 123 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 123 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 123 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 123 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 123 -j ufw-user-limit-accept
+
+### tuple ### limit any 18080 0.0.0.0/0 any 0.0.0.0/0 in comment=4d6f6e65726f20503250
+-A ufw-user-input -p tcp --dport 18080 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 18080 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 18080 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 18080 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 18080 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 18080 -j ufw-user-limit-accept
+
+### tuple ### limit any 18081 0.0.0.0/0 any 0.0.0.0/0 in comment=4d6f6e65726f20525043
+-A ufw-user-input -p tcp --dport 18081 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 18081 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 18081 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 18081 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 18081 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 18081 -j ufw-user-limit-accept
+
+### tuple ### limit any 18082 0.0.0.0/0 any 0.0.0.0/0 in comment=4d6f6e65726f205a4d51
+-A ufw-user-input -p tcp --dport 18082 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 18082 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 18082 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 18082 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 18082 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 18082 -j ufw-user-limit-accept
+
+### tuple ### limit any 37888 0.0.0.0/0 any 0.0.0.0/0 in comment=5032706f6f6c206d696e69
+-A ufw-user-input -p tcp --dport 37888 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p tcp --dport 37888 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p tcp --dport 37888 -j ufw-user-limit-accept
+-A ufw-user-input -p udp --dport 37888 -m conntrack --ctstate NEW -m recent --set
+-A ufw-user-input -p udp --dport 37888 -m conntrack --ctstate NEW -m recent --update --seconds 30 --hitcount 10 -j ufw-user-limit
+-A ufw-user-input -p udp --dport 37888 -j ufw-user-limit-accept
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
