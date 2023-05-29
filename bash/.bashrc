@@ -8,10 +8,16 @@ fi
 
 #> EXPORTS
 
+# Colored LS output
+export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.cfg=00;32:*.conf=00;32:*.diff=00;32:*.doc=00;32:*.ini=00;32:*.log=00;32:*.patch=00;32:*.pdf=00;32:*.ps=00;32:*.tex=00;32:*.txt=00;32:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.swp=00;90:*.tmp=00;90:*.dpkg-dist=00;90:*.dpkg-old=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:';
+export DIR_COLORS=$LS_COLORS
+
+# Colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export CC="gcc"
+
 # PS1
 export PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h \[$(tput setaf 5)\]\W\[$(tput setaf 1)\]]\[$(tput setaf 2)\] \\$ \[$(tput sgr0)\]"
-
-export TERMINAL=st
 
 # Preferred editor: If neovim is found, use it; otherwise use vim
 [ $(which nvim) ] && export EDITOR='nvim' || export EDITOR='vim'
@@ -47,14 +53,8 @@ export LESS_TERMCAP_ZO=$(tput ssupm)
 export LESS_TERMCAP_ZW=$(tput rsupm)
 export GROFF_NO_SGR=1         # For Konsole and Gnome-terminal
 
-
-# Add $HOME/.local/bin and $HOME/.config/scripts
-# to PATH so any script in that directory is executable
-export PATH="$HOME/.local/bin:$HOME/.config/scripts:$PATH"
-
-# Colored GCC warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-export CC="gcc"
+# Extend PATH
+export PATH="$HOME/.emacs.d/bin:$HOME/.local/bin:$HOME/.config/scripts:$PATH"
 
 # Key timeout for Vim mode
 export KEYTIMEOUT=1
@@ -62,42 +62,23 @@ export KEYTIMEOUT=1
 # Set default Browser
 export BROWSER="librewolf"
 
-# Fix gpg
+# Use GPG with SSH
 export GPG_TTY=$(tty)
 
-# NNN settings
-export NNN_BMS="d:$HOME/Documents;D:$HOME/Downloads;h:$HOME;m:$HOME/Music;p:$HOME/Pictures;s:/media/matteo/ssd"
-export NNN_FIFO="/tmp/nnn.fifo"
-export NNN_PLUG="d:diffs;e:suedit;f:fixname;i:imgview;m:mp3conv;n:bulknew;p:picker;t:preview-tui;u:getplugs;v:preview-tabbed"
+# Correctly start SSH agent and GPG agent
+if [ -z $(find /tmp -type d -name "ssh-XXXXXX*" | head -n1) ]; then
+	eval $(ssh-agent) >/dev/null 2>&1
+fi
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpg-connect-agent /bye >/dev/null 2>&1
 
 # Xauthority
 export XAUTHORITY=$HOME/.Xauthority
 
-# Surfraw
-export SURFRAW_text_browser="/usr/bin/elinks"
-export SURFRAW_graphical=yes
-
-# set dbus for remote SSH connections
-if [ -n "$SSH_CLIENT" -a -n "$DISPLAY" ]; then
-    machine_id=$(LANGUAGE=C hostnamectl|grep 'Machine ID:'| sed 's/^.*: //')
-    x_display=$(echo $DISPLAY|sed 's/^.*:\([0-9]\+\)\(\.[0-9]\+\)*$/\1/')
-    dbus_session_file="$HOME/.dbus/session-bus/${machine_id}-${x_display}"
-    if [ -r "$dbus_session_file" ]; then
-            export $(grep '^DBUS.*=' "$dbus_session_file")
-            # check if PID still running, if not launch dbus
-            ps $DBUS_SESSION_BUS_PID | tail -1 | grep dbus-daemon >& /dev/null
-            [ "$?" != "0" ] && export $(dbus-launch) >& /dev/null
-    else
-            export $(dbus-launch) >& /dev/null
-    fi
-fi
-
 #> FUNCTIONS
-
-# Send mail from terminal
-# Usage: compose SUBJECT DEST
-compose() {
-	neomutt -s $1 $2
+# Remove colors from file (ANSI escape sequences)
+decolorise() {
+	sed 's/\x1B[@A-Z\\\]^_]\|\x1B\[[0-9:;<=>?]*[-!"#$%&'"'"'()*+,.\/]*[][\\@A-Z^_`a-z{|}~]//g' "$1"
 }
 
 # Empty trash (.local/share/Trash)
@@ -137,6 +118,10 @@ rm-apk-safe() {
 	adb shell cmd package uninstall -k "$1"
 }
 
+restore-apk() {
+	adb shell cmd package install-existing "$1"
+}
+
 # Download a song
 song() {
 	# Check if we have a second argument (save location)
@@ -152,15 +137,15 @@ song() {
 
 # Convert any supported file to mp3
 tomp3() {
-	ffmpeg -i "$1" -b:a 320K -vn "$1.mp3"
+	extension="${1##*.}"
+	ffmpeg -i "$1" -b:a 320K -vn "${1/$extension/mp3}"
 }
 
 # Convert any supported file to mp4
 tomp4() {
 	extension="${1##*.}"
-	ffmpeg -i "$1" -codec copy "${1/$extension/mp4}" && rm "$1"
+	ffmpeg -i "$1" -codec copy "${1/$extension/mp4}"
 }
-
 #< END FUNCTIONS
 
 #> SOURCES
@@ -182,7 +167,6 @@ if [ "$TERM" != "linux" ]; then
 	# Show current time at the right side of PS1
 	#bleopt prompt_rps1='\t'
 fi
-
 #< END SOURCES
 
 #> OTHERS
@@ -199,7 +183,7 @@ fi
 # Vim mode
 #set editing-mode vi
 set -o vi
-
 #< END OTHERS
 
+# Hand over shell to user
 clear; echo "Successfully started bash"
