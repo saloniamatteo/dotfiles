@@ -66,7 +66,7 @@ export BROWSER="librewolf"
 export GPG_TTY=$(tty)
 
 # Correctly start SSH agent and GPG agent
-if [ -z $(find /tmp -type d -name "ssh-XXXXXX*" | head -n1) ]; then
+if [ -z $(find /tmp -type d -name "ssh-XXXXXX*" 2>/dev/null | head -n1) ]; then
 	eval $(ssh-agent) >/dev/null 2>&1
 fi
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
