@@ -65,12 +65,12 @@ export BROWSER="librewolf"
 # Use GPG with SSH
 export GPG_TTY=$(tty)
 
-# Correctly start SSH agent and GPG agent
+# Correctly start SSH agent
+# Note: you need to start "gnome-keyring-daemon" first
 if [ -z $(find /tmp -type d -name "ssh-XXXXXX*" 2>/dev/null | head -n1) ]; then
 	eval $(ssh-agent) >/dev/null 2>&1
 fi
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-gpg-connect-agent /bye >/dev/null 2>&1
+export SSH_AUTH_SOCK="/run/user/$UID/keyring/ssh"
 
 # Xauthority
 export XAUTHORITY=$HOME/.Xauthority
