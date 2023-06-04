@@ -67,11 +67,9 @@ export GPG_TTY=$(tty)
 
 # Correctly start SSH agent
 # Note: you need to install "keychain" first,
-# and import at least one private key:
+# and run the following command once you're
+# ready to use keychain:
 # keychain $HOME/.ssh/id_rsa
-if [ -z $(find /tmp -type d -name "ssh-XXXXXX*" 2>/dev/null | head -n1) ]; then
-	eval $(ssh-agent) >/dev/null 2>&1
-fi
 keychain --noask --nocolor --nogui $HOME/.ssh/id_rsa
 source $HOME/.keychain/$HOSTNAME-sh
 
