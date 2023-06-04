@@ -67,10 +67,12 @@ export GPG_TTY=$(tty)
 
 # Correctly start SSH agent
 # Note: you need to start "gnome-keyring-daemon" first
-if [ -z $(find /tmp -type d -name "ssh-XXXXXX*" 2>/dev/null | head -n1) ]; then
-	eval $(ssh-agent) >/dev/null 2>&1
-fi
-export SSH_AUTH_SOCK="/run/user/$UID/keyring/ssh"
+#if [ -z $(find /tmp -type d -name "ssh-XXXXXX*" 2>/dev/null | head -n1) ]; then
+#	eval $(ssh-agent) >/dev/null 2>&1
+#fi
+#export SSH_AUTH_SOCK="/run/user/$UID/keyring/ssh"
+keychain --noask --nocolor --nogui $HOME/.ssh/id_rsa
+source $HOME/.keychain/$HOSTNAME-sh
 
 # Xauthority
 export XAUTHORITY=$HOME/.Xauthority
