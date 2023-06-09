@@ -33,6 +33,7 @@ alias \
 	e="emacsclient -cs /tmp/emacs$UID/server -a 'emacs'" \
 	emacs="emacsclient -cs /tmp/emacs$UID/server -a 'emacs'" \
 	firefox="librewolf" \
+	keychain-add="keychain ~/.ssh/id_rsa" \
 	java="/opt/openjdk-bin-17/bin/java" \
 	mail="neomutt" \
 	mpv-hi="mpv --opengl-glfinish=yes --opengl-swapinterval=0 --vo=gpu --hwdec=vaapi --opengl-pbo" \
