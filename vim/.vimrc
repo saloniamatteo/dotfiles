@@ -222,7 +222,10 @@ call plug#end()
 colorscheme tokyonight-moon
 
 " use terminal colors if we have truecolor support
-if (has("termguicolors"))
+if $TERM =~ '^\(rxvt\|screen\|interix\|putty\|linux\)\(-.*\)\?$'
+  set notermguicolors
+  colorscheme koehler
+elseif (has("termguicolors"))
   set termguicolors
 endif
 
