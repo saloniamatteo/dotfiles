@@ -6,6 +6,8 @@
 " ----------------------------- "
 
 " Visual Options {{{
+" set tab size to 4
+set tabstop=4
 " show numbers at the left side of the terminal
 set number
 " show menu auto-completion options
@@ -168,8 +170,8 @@ let g:polyglot_disabled = ['sensible']
 call plug#begin('~/.vim/plugged')
 " -------------------- "
 " Color schemes
-" Dracula
-Plug 'dracula/vim'
+" Tokyonight (:colorscheme tokyonight-{,night,storm,day,moon)
+Plug 'folke/tokyonight.nvim'
 " -------------------- "
 " UI
 " Vim dev-icons
@@ -188,14 +190,6 @@ Plug 'sheerun/vim-polyglot'
 "  Better Navigation
 "  Vim matchup (better % navigation)
 Plug 'andymass/vim-matchup'
-" -------------------- "
-" Code completion
-" NOTE: install `python3-venv`, `python3`, `nvim`, `sqlite`
-" or these plugins will not work!
-" You should also have neovim >= 0.5.x
-Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
-Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
-Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
 " -------------------- "
 " Miscellaneous utilities
 " Vim-autoswap
@@ -225,7 +219,7 @@ call plug#end()
 
 " set color scheme to dogrun
 " this line will be modified if running in a TTY
-colorscheme dracula
+colorscheme tokyonight-moon
 
 " use terminal colors if we have truecolor support
 if (has("termguicolors"))
@@ -235,21 +229,11 @@ endif
 " }}}
 
 " Plugin Options {{{
-" Start COQ silently
-let g:coq_settings = { 'auto_start': 'shut-up' }
-
-" COQ first and third-party plugins
-lua require("coq_3p") {
-	\ { src = "repl", sh = "bash", max_lines = 99, deadline = 500, unsafe = { "rm", "poweroff", "mv", "reboot" } },
-	\ { src = "bc", short_name = "MATH", precision = 6 },
-	\ { src = "figlet", short_name = "BIG" },
-\ }
-
 " Gitsigns
 lua require("gitsigns").setup();
 
 " Indentation
-lua require("indent_blankline").setup();
+lua require("ibl").setup();
 
 " lightline-delphinus options
 let g:lightline_delphinus_use_powerline_glyphs = 1
@@ -266,7 +250,7 @@ let g:cscope_silent = 1
 
 " lightline settings
 let g:lightline = {
-	\ 'colorscheme': 'dracula',
+	\ 'colorscheme': 'tokyonight',
 	\ 'component': {
 	\		'lineinfo': ' %3l:%-2v', 
 	\ },
