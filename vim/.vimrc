@@ -95,6 +95,9 @@ set foldlevelstart=10
 " Remaps {{{
 " NOTE: <CR> means line break/enter
 
+" Toggle NerdTREE with \l
+map <leader>l :NERDTreeToggle<CR>
+
 " Set spell check to <leader>o (\o; orthography)
 map <leader>o :setlocal spell!<CR>
 
@@ -159,11 +162,6 @@ nmap        ++ vip++
 " }
 " }}}
 
-" Plugin preload options {{{
-" Disable vim-polyglot auto-indentation
-let g:polyglot_disabled = ['sensible']
-" }}}
-
 " Plugins {{{
 " vim plug: https://github.com/junegunn/vim-plug
 " install packages by running :PlugInstall inside Vim
@@ -186,32 +184,18 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 " Better syntax
 Plug 'sheerun/vim-polyglot'
-" -------------------- "
-"  Better Navigation
-"  Vim matchup (better % navigation)
+" Vim matchup (better % navigation)
 Plug 'andymass/vim-matchup'
+" Linter
+Plug 'w0rp/ale'
+" Startup message (à-la-Emacs)
+Plug 'mhinz/vim-startify'
+" NerdTREE
+Plug 'preservim/nerdtree'
 " -------------------- "
-" Miscellaneous utilities
-" Vim-autoswap
-" NOTE: install `wmctrl` on Linux; requires X11 to be running
-" For more info, see project page
-Plug 'gioele/vim-autoswap'
-" listtrans.vim -- toggle a sentence to a comma-separated list (and viceversa)
-Plug 'schoettl/listtrans.vim'
-" Vim-vmath -- visual math
-" Select some numbers, and press "++", the plugin will show
-" the sum, average, minimum, and maximum.
-" These will be accessible from the registers denoted by
-" the highlighted letter in each result:
-"
-" Result	 Register
-" sum		 s
-" average	 a
-" minimum	 n
-" maximum	 x
-" num. of items  c
-" range		 r
-Plug 'nixon/vim-vmath'
+" Utils
+" Comment lines easily
+Plug 'tpope/vim-commentary'
 call plug#end()
 " }}}
 
@@ -255,7 +239,7 @@ let g:cscope_silent = 1
 let g:lightline = {
 	\ 'colorscheme': 'tokyonight',
 	\ 'component': {
-	\		'lineinfo': ' %3l:%-2v', 
+	\		'lineinfo': ' %3l:%-2v',
 	\ },
 	\ 'component_function': {
 	\	 'gitbranch': 'FugitiveHead',
@@ -279,6 +263,19 @@ let g:lightline = {
 	\ },
 	\ }
 
+" ALE settings
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 0
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_open_list = 1
+let g:ale_keep_list_window_open=0
+let g:ale_set_quickfix=0
+let g:ale_list_window_size = 5
+let g:ale_fixers = {
+  \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+  \}
+let g:ale_fix_on_save = 1
+
 " Check filename (LightLine)
 function! LightlineFilename()
 	if &buftype ==# 'terminal'
@@ -297,10 +294,14 @@ function! LightlineWebDevIcons(n)
 endfunction
 
 " Show RO symbol if read-only
-function! LightlineReadonly() 
- 	return &readonly ? 'RO' : '' 
-endfunction 
+function! LightlineReadonly()
+ 	return &readonly ? 'RO' : ''
+endfunction
+" }}}
 
+" Automatic commands {{{
+" Start NERDTree and put the cursor back in the other window.
+autocmd VimEnter * NERDTree | wincmd p
 " }}}
 
 " Spell-checking {{{
