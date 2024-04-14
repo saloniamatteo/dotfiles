@@ -182,6 +182,8 @@ Plug 'delphinus/lightline-delphinus'
 Plug 'lewis6991/gitsigns.nvim'
 " Show indentation
 Plug 'lukas-reineke/indent-blankline.nvim'
+" Color-coded indentation (requires indent-blankline)
+Plug 'TheGLander/indent-rainbowline.nvim'
 " Better syntax
 Plug 'sheerun/vim-polyglot'
 " Vim matchup (better % navigation)
@@ -220,7 +222,7 @@ endif
 lua require("gitsigns").setup();
 
 " Indentation
-lua require("ibl").setup();
+lua require("ibl").setup(require("indent-rainbowline").make_opts(opts));
 
 " lightline-delphinus options
 let g:lightline_delphinus_use_powerline_glyphs = 1
