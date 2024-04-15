@@ -95,8 +95,8 @@ set foldlevelstart=10
 " Remaps {{{
 " NOTE: <CR> means line break/enter
 
-" Toggle NerdTREE with \l
-map <leader>l :NERDTreeToggle<CR>
+" Toggle Neotree with \l
+map <leader>l :Neotree toggle<CR>
 
 " Set spell check to <leader>o (\o; orthography)
 map <leader>o :setlocal spell!<CR>
@@ -192,8 +192,10 @@ Plug 'andymass/vim-matchup'
 Plug 'w0rp/ale'
 " Startup message (à-la-Emacs)
 Plug 'mhinz/vim-startify'
-" NerdTREE
-Plug 'preservim/nerdtree'
+" Neotree
+Plug 'nvim-lua/plenary.nvim' " neotree dependency
+Plug 'MunifTanjim/nui.nvim' " neotree dependency
+Plug 'nvim-neo-tree/neo-tree.nvim'
 " -------------------- "
 " Utils
 " Comment lines easily
@@ -301,9 +303,9 @@ function! LightlineReadonly()
 endfunction
 " }}}
 
-" Automatic commands {{{
-" Start NERDTree and put the cursor back in the other window.
-autocmd VimEnter * NERDTree | wincmd p
+" Auto commands {{{
+" Automatically open Neotree on startup
+autocmd VimEnter * Neotree show
 " }}}
 
 " Spell-checking {{{
