@@ -306,6 +306,13 @@ endfunction
 " Auto commands {{{
 " Automatically open Neotree on startup
 autocmd VimEnter * Neotree show
+
+" Show vim-startify on new tab
+autocmd BufEnter *
+	\ if !exists('t:startify_new_tab') && empty(expand('%')) |
+	\ let t:startify_new_tab = 1 |
+	\ Startify |
+	\ endif
 " }}}
 
 " Spell-checking {{{
