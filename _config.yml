@@ -1,4 +1,6 @@
-description: Salonia Matteo's dotfiles (GNU/Linux configuration)
-logo: /dotfiles-logo.png
-theme: jekyll-theme-minimal 
 title: Dotfiles
+description: Matteo Salonia's dotfiles (GNU/Linux configuration)
+logo: /dotfiles-logo.png
+remote_theme: pages-themes/dinky@v0.2.0
+plugins:
+- jekyll-remote-theme
