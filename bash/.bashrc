@@ -23,6 +23,8 @@ export PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput se
 [ $(which nvim) ] && export EDITOR='nvim' || export EDITOR='vim'
 
 # Correctly set language variables
+# LANG is the system language (en_US),
+# the rest is localization    (it_IT)
 export LANG="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
 export LC_NUMERIC="it_IT.UTF-8"
@@ -54,27 +56,25 @@ export LESS_TERMCAP_ZW=$(tput rsupm)
 export GROFF_NO_SGR=1         # For Konsole and Gnome-terminal
 
 # Extend PATH
-export PATH="$HOME/.emacs.d/bin:$HOME/.local/bin:$HOME/.config/scripts:$PATH"
+export PATH="$HOME/.local/bin:$HOME/.config/scripts:/etc/eselect/wine/bin:$PATH"
 
 # Key timeout for Vim mode
 export KEYTIMEOUT=1
 
 # Set default Browser
-export BROWSER="librewolf"
+export BROWSER="librewolf-bin"
 
 # Use GPG with SSH
 export GPG_TTY=$(tty)
 
-# Correctly start SSH agent
-# Note: you need to install "keychain" first,
-# and run the following command once you're
-# ready to use keychain:
-# keychain $HOME/.ssh/id_rsa
-keychain --noask --nocolor --nogui $HOME/.ssh/id_rsa
-source $HOME/.keychain/$HOSTNAME-sh
-
 # Xauthority
-export XAUTHORITY=$HOME/.Xauthority
+# Uncomment this line if you DON'T use a display manager
+# (as in, you run "startx", or the DE/WM directly.)
+#export XAUTHORITY=$HOME/.Xauthority
+
+# Wine settings
+export WINEFSYNC=1
+export WINE_LARGE_ADDRESS_AWARE=1
 
 #> FUNCTIONS
 # Remove colors from file (ANSI escape sequences)
@@ -123,6 +123,13 @@ restore-apk() {
 	adb shell cmd package install-existing "$1"
 }
 
+# Install DXVK & VKD3D in WINEPREFIX
+setup_wine() {
+	echo "Setting up DXVK and VKD3D in WINEPREFIX: $WINEPREFIX"
+	setup_dxvk.sh install --symlink
+	setup_vkd3d_proton.sh install --symlink
+}
+
 # Download a song
 song() {
 	# Check if we have a second argument (save location)
@@ -156,35 +163,25 @@ source /etc/bash/bashrc.d/bash_completion.sh
 # Source aliases
 source ~/.aliases
 
-# Bash Line Editor (if we aren't in a TTY)
-if [ "$TERM" != "linux" ]; then
-	source ~/.local/share/blesh/ble.sh
-
-	# BLE settings
-	# Set autocomplete delay
-	#bleopt complete_auto_delay=100
-	# Set EOL string
-	bleopt prompt_eol_mark='⏎'
-	# Show current time at the right side of PS1
-	#bleopt prompt_rps1='\t'
-fi
+# BLE
+source ~/.local/share/blesh/ble.sh
 #< END SOURCES
 
 #> OTHERS
-# If we're not in dvtm, launch nnn using dvtm
-if [[ "$TERM" = "dvtm-256color" ]]; then
-	alias n="nnn -e"
-	alias nnn="nnn -e"
-	PS1="[NNN] $PS1"
-else
-	alias n="dvtm 'nnn -e' 'nnn -e'"
-	alias nnn="dvtm 'nnn -e' 'nnn -e'"
+if [ "$TERM" == "linux" ]; then
+	bleopt prompt_command_changes_layout=1
 fi
+
+# Set BLE EOL string
+bleopt prompt_eol_mark='⏎'
 
 # Vim mode
 #set editing-mode vi
 set -o vi
+
+# "doas" bash completion
+complete -cf doas
 #< END OTHERS
 
 # Hand over shell to user
-clear; echo "Successfully started bash"
+clear; cd; echo "Successfully started bash"
