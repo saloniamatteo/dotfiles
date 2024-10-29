@@ -30,8 +30,6 @@ alias \
 alias \
 	brasero="dbus-launch brasero" \
 	debug="valgrind --tool=memcheck --leak-check=yes --leak-check=full --show-reachable=yes --leak-resolution=high --trace-children=yes --track-origins=yes -s" \
-	e="emacsclient -cs /tmp/emacs$UID/server -a 'emacs'" \
-	emacs="emacsclient -cs /tmp/emacs$UID/server -a 'emacs'" \
 	firefox="librewolf" \
 	keychain-add="keychain ~/.ssh/id_rsa" \
 	java="/opt/openjdk-bin-17/bin/java" \
@@ -41,6 +39,7 @@ alias \
 	poweroff='doas /sbin/poweroff' \
 	reboot='doas /sbin/reboot' \
 	rot13='tr a-zA-Z n-za-mN-ZA-M' \
+	startk='dbus-run-session startplasma-wayland' \
 	surf="tabbed -c surf -BNPTeg & disown" \
 	vimpager='/usr/share/vim/vim82/macros/less.sh'
 
@@ -64,4 +63,4 @@ alias \
 # mining
 alias \
 	benchmark='doas xmrig --bench=1M --submit -t 4 --randomx-1gb-pages --cpu-no-yield --cpu-priority 5 --randomx-mode fast --asm intel --randomx-no-numa --no-color --cpu-affinity 0xFF -a rx/0' \
-	mine-xmrig='doas schedtool -a 0x255 -n -20 -e xmrig -o pool.minexmr.com:4444 -u CHANGEME+180000 -k --rig-id CHANGEME --randomx-1gb-pages --cpu-no-yield --cpu-priority 5 --randomx-mode fast --asm intel --randomx-no-numa --no-color --print-time 120 --cpu-affinity 0x255 -a rx/0 -t 4 --huge-pages-jit --argon2-impl=AVX2'
+	mine-xmrig='doas schedtool -a 0x255 -n -20 -e xmrig -o pool.example.com:4444 -u CHANGEME+180000 -k --rig-id matteo --randomx-1gb-pages --cpu-no-yield --cpu-priority 5 --randomx-mode fast --asm intel --randomx-no-numa --no-color --print-time 120 --cpu-affinity 0x255 -a rx/0 -t 4 --huge-pages-jit --argon2-impl=AVX2'
