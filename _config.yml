@@ -1,9 +1,10 @@
-title: Dotfiles
+title: Matteo Salonia
 author:
   name: Matteo Salonia
   email: matteo@salonia.it
 
-description: Matteo Salonia's dotfiles
+description: >
+  Dotfiles
 
 remote_theme: jekyll/minima
 plugins:
