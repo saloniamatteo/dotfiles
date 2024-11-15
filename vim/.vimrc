@@ -151,15 +151,6 @@ nnoremap <leader>ff :call CscopeFind('f', expand('<cword>'))<CR>
 nnoremap <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
 " }}}
 
-" listtrans.vim {{{
-nmap ;l <Plug>ListtransToggle
-vmap ;l <Plug>ListtransToggleVisual
-" }}}
-
-" Vim-vmath {
-vmap <expr> ++ VMATH_YankAndAnalyse()
-nmap        ++ vip++
-" }
 " }}}
 
 " Plugins {{{
@@ -188,8 +179,6 @@ Plug 'TheGLander/indent-rainbowline.nvim'
 Plug 'sheerun/vim-polyglot'
 " Vim matchup (better % navigation)
 Plug 'andymass/vim-matchup'
-" Linter
-Plug 'w0rp/ale'
 " Startup message (à-la-Emacs)
 Plug 'mhinz/vim-startify'
 " Neotree
@@ -198,8 +187,18 @@ Plug 'MunifTanjim/nui.nvim' " neotree dependency
 Plug 'nvim-neo-tree/neo-tree.nvim'
 " -------------------- "
 " Utils
-" Comment lines easily
-Plug 'tpope/vim-commentary'
+" Linter
+Plug 'w0rp/ale'
+" Tree sitter (better syntax)
+" Note: you also need to run :TSInstall <lang>,
+" where <lang> is the language you want.
+" I use the following:
+" bash, c, cpp, css, html, javascript,
+" markdown, php, vim
+" To update installed files, run :TSUpdate
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Auto close HTML tags
+Plug 'windwp/nvim-ts-autotag'
 call plug#end()
 " }}}
 
@@ -225,6 +224,12 @@ lua require("gitsigns").setup();
 
 " Indentation
 lua require("ibl").setup(require("indent-rainbowline").make_opts(opts));
+
+" Tree Sitter
+lua require("nvim-treesitter.configs").setup{highlight={enable=true}};
+
+" TS-Autotag
+lua require("nvim-ts-autotag").setup{opts={enable_close_on_slash=true}};
 
 " lightline-delphinus options
 let g:lightline_delphinus_use_powerline_glyphs = 1
