@@ -1,32 +1,55 @@
 #!/bin/sh
-
-# Prints the current volume or 🔇 if muted.
+# Prints the current volume
 
 case $BLOCK_BUTTON in
-	1) setsid -f "$TERMINAL" -e pulsemixer ;;
-	2) pulsemixer --id sink-0 --toggle-mute ;;
-	4) pulsemixer --id sink-0 --change-volume +5 ;;
-	5) pulsemixer --id sink-0 --chang-volume -5 ;;
+	1) setsid -w -f "$TERMINAL" -e pulsemixer; pkill -RTMIN+10 "${STATUSBAR:-dwmblocks}" ;;
+	2) wpctl set-mute @DEFAULT_SINK@ toggle ;;
+	4) wpctl set-volume @DEFAULT_SINK@ 1%+ ;;
+	5) wpctl set-volume @DEFAULT_SINK@ 1%- ;;
 	3) notify-send "📢 Volume module" "\- Shows volume 🔊, 🔇 if muted.
 - Middle click to mute.
 - Scroll to change." ;;
-	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-micstat=$(amixer sget Capture | tail -n 1 | awk '{print $6}' | tr -d "[]")
-[[ $micstat = "" ]] && micstat="off"
+# Get speaker & mic volumes
+spkvol="$(wpctl get-volume @DEFAULT_SINK@)"
+micvol="$(wpctl get-volume @DEFAULT_SOURCE@)"
 
-[ $(pulsemixer --id source-1 --get-mute) = true ] && echo "🔇 🎤$micstat" && exit
+# Omit the . without calling and external program.
+split() {
+	IFS=$2
+	set -- $1
+	printf '%s' "$@"
+}
 
-vol="$(pulsemixer --id sink-0 --get-volume | awk '{print $1}')"
-[[ "$vol" = 0 || "$vol" = "" ]] && echo "🔇 🎤$micstat" && exit
-
-if [ "$vol" -gt "70" ]; then
-	icon="🔊"
-elif [ "$vol" -lt "30" ]; then
-	icon="🔈"
+# Check speaker volume
+if [ "$spkvol" != "${spkvol%\[MUTED\]}" ]; then
+	spkicon="🔇"
+	spkvol="off"
 else
-	icon="🔉"
+	spkvol="${spkvol#Volume: }"
+	spkvol="$(printf "%.0f" "$(split "$spkvol" ".")")"
+
+	case 1 in
+		$((spkvol >= 70)) ) spkicon="🔊" ;;
+		$((spkvol >= 30)) ) spkicon="🔉" ;;
+		$((spkvol >= 1)) ) spkicon="🔈" ;;
+		* ) spkicon="🔇" ;;
+	esac
+
+	spkvol="$spkvol%"
 fi
 
-echo "$icon$vol% 🎤$micstat"
+# Check mic volume
+micicon="🎤"
+if [ "$micvol" != "${micvol%\[MUTED\]}" ]; then
+	micvol="off"
+else
+	micvol="${micvol#Volume: }"
+	micvol="$(printf "%.0f" "$(split "$micvol" ".")")"
+	micvol="$micvol%"
+fi
+
+# Print volumes
+echo "$spkicon $spkvol $micicon $micvol"

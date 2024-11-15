@@ -1,15 +1,15 @@
 #!/bin/bash
-# get fan speed
+# Get ThinkPad fan speed
 
-speed=$(cat /proc/acpi/ibm/fan | grep level | head -n 1 | awk '{print $2}')
+# Get fan speed
+speed=$(cat /proc/acpi/ibm/fan | awk '/level:/ {print $2}')
 
-printf "💨"
+icon="💨"
 
-if [ "$speed" = "auto" ]; then
-	printf " a"
-else if [ "$speed" = "disengaged" ]; then
-	printf " max"
-else
-	printf " $speed"
-fi
-fi
+case $speed in
+	"auto") tspeed="auto" ;;
+	"disengaged") tspeed="max" ;;
+	*) tspeed="$speed" ;;
+esac
+
+echo "$icon $tspeed"
