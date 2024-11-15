@@ -1,5 +1,5 @@
 ## Donate
-Support this project: https://salonia.it/donate
+Support this project: [salonia.it/donate](https://salonia.it/donate)
 
 ## Installation
 Previously, I had a script to do various actions, both for Arch Linux and Gentoo.
