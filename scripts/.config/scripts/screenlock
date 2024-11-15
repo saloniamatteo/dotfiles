@@ -1,2 +1,2 @@
 #!/bin/bash
-slock -m "Locked at $(date "+%a %d, %H:%M:%S") $(printf "\nRandom quote:\n$(fortune)")"
+slock -m "$(printf "Locked at $(date "+%a %d, %H:%M:%S")\n$(fortune | cowsay -f eyes)")"

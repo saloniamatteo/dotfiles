@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# increase cpu performance
+# apply undervolt
+rc-service intel-undervolt-loop start  >/dev/null 2>&1
+intel-undervolt apply >/dev/null 2>&1
+# enable Turbo Boost
+x86_energy_perf_policy --turbo-enable 1 >/dev/null 2>&1
+# set governor to performance
+cpupower frequency-set -g schedutil >/dev/null 2>&1
+# reserve huge pages
+sysctl -w vm.nr_hugepages=1280 >/dev/null 2>&1
+sysctl -w vm.dirty_ratio=40 >/dev/null 2>&1
+sysctl -w vm.dirty_background_ratio=10 >/dev/null 2>&1
+sysctl -w vm.swappiness=10 >/dev/null 2>&1
+# set MSR values
+randomx_boost.sh >/dev/null 2>&1

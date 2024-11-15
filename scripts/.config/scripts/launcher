@@ -6,5 +6,7 @@ scripts=$(cd $HOME/.config/scripts && find . -maxdepth 1 -perm -111 -type f | tr
 
 # ask user which script to run
 scriptrun=$(echo "$scripts" | dmenu -i -p "Select which script to run:")
-[[ $scriptrun = "" ]] && notify-send -u critical "Launcher" "Please select a script" && exit 1
-notify-send "Launcher" "Launching script: $scriptrun" && bash $HOME/.config/scripts/$scriptrun
+[[ $scriptrun = "" ]] && exit 1
+
+# Run script
+/bin/bash "$HOME/.config/scripts/$scriptrun"

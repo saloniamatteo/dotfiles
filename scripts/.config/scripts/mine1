@@ -11,12 +11,15 @@ $root rc-service atd stop
 $root rc-service avahi-daemon stop
 $root rc-service backlight stop
 $root rc-service chrony stop
+$root rc-service connman stop
 $root rc-service cronie stop
 $root rc-service cupsd stop
 $root rc-service device-mapper stop
 $root rc-service dnsmasq stop
 $root rc-service elogind stop
-$root rc-service emacs.user stop # CHANGEME: replace user with username
+$root rc-service emacs.root stop
+$root rc-service emacs.matteo stop
+$root rc-service fancontrol stop
 $root rc-service fcgiwrap stop
 $root rc-service gpm stop
 $root rc-service keymaps stop
@@ -31,20 +34,17 @@ $root rc-service ntpd stop
 $root rc-service save-keymaps stop
 $root rc-service savetermencoding stop
 $root rc-service sshd stop
-$root rc-service swap stop
-$root rc-service sysklogd stop
-$root rc-service syslogd stop
 $root rc-service tlp stop
 $root rc-service udev-trigger stop
 $root rc-service vmware-networks stop
 $root rc-service vmware-networks-configuration stop
+$root rc-service xinetd stop
 $root pkill accounts-daemon
 $root pkill adb
 $root pkill anacron
 $root pkill at-spi-bus-launcher
 $root pkill at-spi2-registryd
 $root pkill crond
-$root pkill dbus-daemon
 $root pkill dnsmasq
 $root pkill gitstatusd-linu
 $root pkill gpg-agent
@@ -57,16 +57,6 @@ $root pkill vmware-tray
 
 # Start inet service
 $root rc-service net.wlan0 start
-
-# Decrease priority of processes
-# Get list of processes
-for pid in $(ps ax -o pid=); do
-	# Set process affinity to 0x55 and nice to 15
-	$root schedtool -a 0x55 -n 15 $pid
-done
-
-# Unload unneded modules
-$root modprobe -r at24 fuse sr_mod cdrom joydev kvm_intel lpc_ich mousedev psmouse snd_ctl_led tun uvcvideo
 
 # increase performance
 printf "\n"

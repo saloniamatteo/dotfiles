@@ -1,5 +1,5 @@
 #!/bin/bash
-# this script sets the level/speed of the ThinkPad fan
+# This script sets the level/speed of the ThinkPad fan
 
 # if doas is installed, use it
 [ $(which doas) ] && root="doas" || root="sudo"
