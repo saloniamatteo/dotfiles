@@ -1,134 +1,50 @@
-# Salonia Matteo's dotfiles
-## Sections:
-- [Donate](#donate)
-- [Cloning note](#cloning-note)
-- [Installation](#installation)
-- [Previews](#previews)
-- [Help](#help)
-- [Others (not included)](#others-not-included)
-	- [LibreWolf Addons](#librewolf-addons)
-- [Terminal](#terminal)
-	- [Shell](#shell)
-- [Window Manager](#window-manager)
-	- [Slock (suckless locker)](#slock)
-- [Intel Undervolt](#intel-undervolt)
-- [Low Battery Notifier](#low-battery-notifier)
-
-***
+# Matteo Salonia's dotfiles
+This repository contains my configuration files (dotfiles).
 
 ## Donate
-Support this project: https://salonia.it/donate.html
-
-## Cloning note
-NOTE! Please clone this repository with the following command:
-`git clone --recurse-submodules https://github.com/saloniamatteo/dotfiles`
-
-The directory `dwm` is a submodule that points to
-[saloniamatteo/dwm](https://github.com/saloniamatteo/dwm)
-and might not get downloaded when cloning normally!
+Support this project: https://salonia.it/donate
 
 ## Installation
-A script to install various components is included.
-You can choose which component to install, and the script will help you.
+Previously, I had a script to do various actions, both for Arch Linux and Gentoo.
 
-**NOTE**: If you want to install packages, you can only choose `pacman` or `portage`
-(aka Arch or Gentoo); install packages yourself if you don't have installed them already.
+That script has now been removed, since it is impossible to keep up with it,
+and the many configurations this repo has.
 
-**NOTE 2**: When installing packages on Gentoo, the script will first ask you to
-configure your USE flags (you will be able to proceed to install the
-packages anytime you please, even if you don't change your USE flags)
+In order to copy a component to your system, you can just copy
+the contents of the chosen directory to your $HOME directory:
+the appropriate files will go where they need to go.
 
-To run the all-in-one script, run the following commands:
+Please make sure you review every file before overwriting your configs.
 
-```bash
-git clone --recurse-submodules https://github.com/saloniamatteo/dotfiles
-cd dotfiles
-./install.sh
-```
+## dwm & dwmblocks
+This repo no longer contains the `dwm` submodule, since that would
+only be endless recursion.
+Instead, take a look at https://github.com/saloniamatteo/dwm
 
-## Previews (dwm configuration)
-
-See [saloniamatteo/dwm#previews](https://github.com/saloniamatteo/dwm#previews) for more pictures.
-
-Tiling st window with zsh prompt
-![st-tile](https://raw.githubusercontent.com/saloniamatteo/dwm/master/Previews/preview-st.png)
-
-Tiling st window with floating program
-![tile-float](https://raw.githubusercontent.com/saloniamatteo/dwm/master/Previews/preview-floating-win.png)
-
-Tiling layout (programs: `ranger`, `nvim`, and `tty-clock`)
-![layout-tile](https://raw.githubusercontent.com/saloniamatteo/dwm/master/Previews/layouts-tile.png)
-
-CenteredMaster layout (programs: `neofetch`, `ranger` and `htop`)
-![layout-centeredmaster](https://raw.githubusercontent.com/saloniamatteo/dwm/master/Previews/layouts-centeredmaster.png)
-
-***
-
-## Help
-Have any issues with dwm? Check the [`man` page](https://github.com/saloniamatteo/dwm/blob/master/dwm.1)
-or read the [source code](https://github.com/saloniamatteo/dwm/blob/master/config.h),
-it contains all of the custom keybindings that I use with dwm.
-
-NOTE: [saloniamatteo/dwm](https://github.com/saloniamatteo/dwm) is the main repository
-for my build of dwm & dwmblocks. If you need any help, go there.
-
-## Others (not included)
-- Browser: [LibreWolf](https://librewolf.net)
+## Themes
 - Grub theme: [Gentoo Silence](https://github.com/saloniamatteo/gentoo-silence)
-- GTK theme: [Arc Theme](https://github.com/jnsh/arc-theme)
-- Icon theme: [Arc Icon Theme](https://github.com/horst3180/arc-icon-theme)
+- GTK theme: [Breeze](https://github.com/KDE/breeze)
+- Icon theme: [Tela](https://github.com/vinceliuice/Tela-icon-theme)
 
 NOTE: If you want to change GTK's graphical settings on dwm,
 such as the cursor theme or the icon theme, use a program like `lxappearance`.
 
-### Firefox (LibreWolf) addons
+## Firefox (LibreWolf) addons
 Here's a list of the Firefox addons I use:
-- Age restriction bypass for YouTube
-- Amazon Container
-- CanvasBlocker
 - ClearURLs
-- Facebook Container
-- Google Container - with Integrations
-- Greasemonkey
 - Return YouTube dislike
-- SponsorBlock for YouTube
+- SponsorBlock
 - Temporary containers
-- Twitter Container
 - uBlock Origin
-- Universal Bypass
-
-## Terminal
-- Terminal: `st` ([My build](https://github.com/saloniamatteo/st))
-
-***
+- Universal Bypass (now FastForward)
 
 ## Window Manager
-- Window Manager: `dwm`
-- Status bar: `dwmblocks` 
-- Lock screen: `slock` 
+- Window Manager: [dwm](https://dwm.suckless.org)
+- Status bar: [dwmblocks](https://github.com/torrinfail/dwmblocks)
+- Lock screen: [slock](https://tools.suckless.org/slock)
 
-### Slock
-I have included my own build of [slock](https://tools.suckless.org/slock) with two patches:
-
-- Caps color: turns the screen bright red to alert the user that caps lock is on
-- Message: include a custom message; with my custom build you can see when the screen was locked & a random quote, using `fortune`.
-
-To install Slock, run:
-
-```bash
-cd slock &&
-sudo make clean install
-```
-
-Another build of mine, called `slock-red` is included.
-This build has its background color always set to red.
-
-***
-
-### Intel Undervolt
-
-#### READ CAREFULLY!
-
+## Intel Undervolt
+### READ CAREFULLY!
 I have a ThinkPad T440p with an Intel Core i5-4340M (Haswell). I have installed a tool that undervolts the CPU. `intel-undervolt`'s configuration file is located over at `/etc/intel-undervolt.conf`. My config file can be found in the root of this repository and is not copied over by default for security reasons. You have to be careful with undervolting, so read the following info ***CAREFULLY***!
 
 - Values over -60mV are considered ***UNSAFE***, unless you know what you are doing!
@@ -142,11 +58,9 @@ increasing the fan speed to 7/max (use the command `.config/scripts/set-fan` inc
 or use this helpful utility that comes with a GUI: [tp-xfan](https://github.com/saloniamatteo/tp-xfan)),
 and using the power supply instead of the battery
 
-I do not condone undervolting. Do it at your own risk.
+I do not recommend undervolting, unless you know what you're doing. Do it at your own risk.
 
-***
-
-### Low battery notifier
+## Low battery notifier
 I wrote my own low battery notifier. If one of your batteries' capacity is less than 20%, it will send a critical notification, containing said battery name and its capacity. To make this work, you need to install a cron manager. (I use `cronie`)
 
 After you're done, run this command: `crontab -e`, then add these two lines
@@ -162,5 +76,3 @@ You're done! I also have this in my root crontab:
 `*/30 * * * * /usr/bin/updatedb`
 
 Every 30 minutes the command `updatedb` will run, so that the next time you run `locate FILE` it will be very fast to show you where a file is.
-
-***
