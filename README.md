@@ -1,6 +1,3 @@
-# Matteo Salonia's dotfiles
-This repository contains my configuration files (dotfiles).
-
 ## Donate
 Support this project: https://salonia.it/donate
 
