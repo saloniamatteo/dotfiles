@@ -1,4 +1,9 @@
-# Dotfiles
+---
+layout: page
+title: "Dotfiles"
+author:
+- Matteo Salonia
+---
 ## Donate
 Support this project: https://salonia.it/donate
 
