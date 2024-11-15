@@ -14,6 +14,9 @@ In order to copy a component to your system, you can just copy
 the contents of the chosen directory to your $HOME directory:
 the appropriate files will go where they need to go.
 
+`cd` into any "module"'s directory, and look at
+its contents with `tree -a`.
+
 Please make sure you review every file before overwriting your configs.
 
 ## dwm & dwmblocks
