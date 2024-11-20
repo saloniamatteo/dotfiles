@@ -1,2 +1,4 @@
 #!/bin/bash
+# Lock the screen using slock
+# Requires fortune & cowsay.
 slock -m "$(printf "Locked at $(date "+%a %d, %H:%M:%S")\n$(fortune | cowsay -f eyes)")"
