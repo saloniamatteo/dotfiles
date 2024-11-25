@@ -1,19 +1,56 @@
-#!/bin/sh
+#!/bin/bash
+# Increase CPU performance
 
-[ $(whoami) = "root" ] && root="" || root="doas"
+# Check permissions
+if [ $(whoami) = "root" ]; then
+	root=""
+elif [ $(which doas) ]; then
+	root="doas"
+else
+	root="sudo"
+fi
 
-# increase cpu performance
-printf "Increasing CPU performance! \n\n"
-# set fan speed to max
-echo "level disengaged" | $root tee /proc/acpi/ibm/fan
-# apply undervolt
-$root rc-service intel-undervolt-loop start
-$root intel-undervolt apply
-# increase frequency
+# Set fan speed to max, if not called with "-b" or "--boot" flag,
+# which tells us this script was called at boot. Only for ThinkPads.
+# see https://github.com/saloniamatteo/tp-xfan#requirements
+if ! [[ "$1" == "-b" || "$1" == "--boot" ]]; then
+	echo "Setting fan speed"
+	echo "level disengaged" | $root tee /proc/acpi/ibm/fan
+else
+	echo "Not setting fan speed (-b)"
+fi
+
+# Apply undervolt
+echo "Starting intel-undervolt"
+$root rc-service intel-undervolt-loop start  >/dev/null 2>&1
+$root intel-undervolt apply >/dev/null 2>&1
+
+# Set CPU governor to performance
+echo "Setting CPU governor to performance"
 $root cpupower -c all set -b 0
-$root cpupower frequency-set --governor performance
-# reserve huge pages
-$root sysctl -w vm.nr_hugepages=1280
-$root sysctl -w vm.dirty_ratio=40
-$root sysctl -w vm.dirty_background_ratio=10
-$root sysctl -w vm.swappiness=10
+$root cpupower frequency-set -g performance >/dev/null 2>&1
+
+# Reserve huge pages
+echo "Reserving huge pages"
+$root sysctl -w vm.nr_hugepages=1280 >/dev/null 2>&1
+$root sysctl -w vm.dirty_ratio=40 >/dev/null 2>&1
+$root sysctl -w vm.dirty_background_ratio=10 >/dev/null 2>&1
+$root sysctl -w vm.swappiness=10 >/dev/null 2>&1
+
+# Set MSR values
+# Originally from xmrig, AMD section removed
+echo "Setting MSR"
+MSR_FILE=/sys/module/msr/parameters/allow_writes
+
+if test -e "$MSR_FILE"; then
+	echo "on" | $root tee $MSR_FILE
+else
+	$root modprobe msr allow_writes=on
+fi
+
+if grep "Intel" /proc/cpuinfo > /dev/null;
+	then
+		echo "Detected Intel CPU"
+		$root wrmsr -a 0x1a4 0xf
+		echo "MSR register values for Intel applied"
+fi
