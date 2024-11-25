@@ -1,26 +1,36 @@
-setxkbmap it						# Set X keyboard layout to "it"
-xset r rate 400 50					# Increase keyboard speed
-xset dpms 600						# Energy star
-unclutter -idle 3 -jitter 25x25 -grab &			# Hide the mouse automatically if it's not being used
+# Set renderer to GPU
+xrandr --setprovideroutputsource modesetting NVIDIA-0
+xrandr --auto
+
+# Load ICC profile
+xcalib Downloads/Lenovo_ThinkPad_T470p_B140QAN01_5.icm
+
+# Window scaling
+export QT_AUTO_SCREEN_SET_FACTOR=0
+export QT_SCALE_FACTOR=1
+export QT_FONT_DPI=192
+export GDK_SCALE=2
+export GDK_DPI_SCALE=0.5
+
+# X settings
+setxkbmap it							# Set X keyboard layout to "it"
+xset r rate 250 50						# Increase keyboard speed
+xset m 1 1								# Mouse acceleration
+xset dpms 600							# Display Power Management Signaling
 xrdb -merge ~/.Xresources 				# Load Xresouces
-pulseaudio &						# Start Pulseaudio
-picom -b &						# Transparency
-connman-gtk --tray &					# Connection Manager GUI
 
-# Automatically lock the screen if not used for more than 10 minutes
-#xautolock -time 10 -detectsleep -locker 'slock -m "Locked at $(date "+%a %d, %H:%M:%S") $(printf "\nRandom quote: \n") $(fortune)"' &
-#xscreensaver -no-splash &
+# Status bar & applets
+dwmblocks &								# DWM Status bar
+dunst &									# Notification daemon
+copyq &									# Clipboard
+nm-applet &								# NetworkManager applet
+gentoo-pipewire-launcher &				# Start pipewire
 
-# Adjust speaker sound levels
-amixer -qD pulse sset Master 60% &
-amixer -qD pulse sset Master mute &
+# Misc
+v4l2-ctl --set-ctrl brightness=50 &		# Set webcam brightness
+hsetroot -cover Pictures/e60_3.jpg &	# Set wallpaper
+unclutter -idle 3 -jitter 25x25 -grab &	# Hide the mouse automatically if it's not being used
+picom -b &								# Transparency
 
-# Adjust microphone sound levels
-amixer -qD pulse sset Capture 60% &
-amixer -qD pulse sset Capture mute &
-
-# Set webcam brightness
-v4l2-ctl --set-ctrl brightness=50 &
-
-# Run XFCE4
-startxfce4
+# Run dwm
+exec dbus-launch --exit-with-session /usr/local/bin/dwm

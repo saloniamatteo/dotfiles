@@ -40,26 +40,18 @@
 *.color15 : #d1d5dc
 
 ! ------------------------------------------------------------------------------
-! Font configuration
-! ------------------------------------------------------------------------------
-
-!*.font:	Liberation Mono:pixelsize=14:antialias=true:autohint=true:hintstyle=full;
-!*.font:	Fira Code:pixelsize=14:antialias=true:autohint=true:hintstyle=full;
-
-! ------------------------------------------------------------------------------
 ! Xft Font Configuration
 ! ------------------------------------------------------------------------------
 
 Xft.antialias: 1
 Xft.autohint: 1
- Xft.dpi: 101
-!Xft.dpi: 160
+! Set DPI to 192 for a 2560x1440 screen
+! Set DPI to 96 for a smaller screen
+Xft.dpi: 192
 Xft.hinting: 1
 Xft.hintstyle: hintfull
 Xft.lcdfilter: lcddefault
 Xft.rgba: rgb
-Xcursor.theme: Neutral++_White
-Xcursor.size: 32
 
 ! ------------------------------------------------------------------------------
 ! Rofi configs
