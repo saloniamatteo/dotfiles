@@ -1,25 +1,26 @@
 #!/bin/sh
-root=doas
-# increase cpu performance
+# Increase battery effiency, by lowering CPU frequency
+
+# Check permissions
+if [ $(whoami) = "root" ]; then
+	root=""
+elif [ $(which doas) ]; then
+	root="doas"
+else
+	root="sudo"
+fi
+
 printf "\nDecreasing CPU performance! \n\n"
-# enable Turbo Boost
-$root x86_energy_perf_policy --turbo-enable 0
-# apply undervolt (make sure to set values to 0!)
-$root intel-undervolt apply
-# set governor to performance
-$root x86_energy_perf_policy power
-$root cpupower frequency-set -g powersave
-# increase frequency
-$root cpupower frequency-set -f 24000000
+#
+# Apply undervolt
+echo "Starting intel-undervolt"
+$root rc-service intel-undervolt-loop start  >/dev/null 2>&1
+$root intel-undervolt apply >/dev/null 2>&1
+
+# Set CPU governor to powersave
+echo "Setting CPU governor to powersave"
 $root cpupower -c all set -b 15
-$root c2ctl 0-3 -e
-$root c2ctl 0 30 30
-$root c2ctl 1 30 30
-$root c2ctl 2 30 30
-$root c2ctl 3 30 30
-$root c2ctl 4 30 30
-$root c2ctl 5 30 30
-$root c2ctl 6 30 30
-$root c2ctl 7 30 30
-# set fan speed to 7
+$root cpupower frequency-set -g powersave >/dev/null 2>&1
+
+# Set fan speed to auto
 echo "level auto" | $root tee /proc/acpi/ibm/fan

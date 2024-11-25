@@ -1,0 +1,10 @@
+#!/sbin/openrc-run
+# Increase performance, without altering fan speed
+# Matteo Salonia (2024) https://salonia.it
+command="/home/CHANGEME/.config/scripts/inc-perf"
+command_args="-b"
+
+depend() {
+	need localmount
+	after bootmisc modules
+}

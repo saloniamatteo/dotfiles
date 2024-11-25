@@ -1,0 +1,9 @@
+#!/sbin/openrc-run
+# Increase battery efficiency
+# Matteo Salonia (2024) https://salonia.it
+command="/home/CHANGEME/.config/scripts/powersave"
+
+depend() {
+	need localmount
+	after bootmisc modules
+}
