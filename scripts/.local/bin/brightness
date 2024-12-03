@@ -22,11 +22,11 @@ case $BLOCK_BUTTON in
 esac
 
 # Assign emoji based on brightness
-if [[ $brightness_per -ge 70 ]]; then
+if (( $brightness_per > 70 )); then
 	bright_icon="🌞"
-elif [[ $brightness_per -ge 40 && $brightness_per -lt 70 ]]; then
+elif (( $brightness_per >= 40 && $brightness_per < 70 )); then
 	bright_icon="🌤️"
-elif [[ $brightness_per -ge 15 && $brightness_per -lt 40 ]]; then
+elif (( $brightness_per >= 15 && $brightness_per > 40 )); then
 	bright_icon="⛅"
 else
 	bright_icon="🌙"
