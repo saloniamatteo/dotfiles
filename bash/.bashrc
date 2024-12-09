@@ -67,10 +67,13 @@ export BROWSER="librewolf-bin"
 # Use GPG with SSH
 export GPG_TTY=$(tty)
 
+# SSH askpass
+export SSH_ASKPASS="/usr/bin/lxqt-openssh-askpass"
+
 # Xauthority
 # Uncomment this line if you DON'T use a display manager
 # (as in, you run "startx", or the DE/WM directly.)
-#export XAUTHORITY=$HOME/.Xauthority
+export XAUTHORITY=$HOME/.Xauthority
 
 # Wine settings
 export WINEFSYNC=1
@@ -180,7 +183,11 @@ bleopt prompt_eol_mark='⏎'
 set -o vi
 
 # "doas" bash completion
-complete -cf doas
+# If you have app-shells/bash-completion installed
+complete -F _root_command doas
+# This doesn't require bash-completion, however
+# this doesn't complete arguments
+#complete -cf doas
 #< END OTHERS
 
 # Hand over shell to user
