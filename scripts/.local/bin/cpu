@@ -9,9 +9,9 @@ case $BLOCK_BUTTON in
 	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
-# Get temperatures
-cpu=$(sensors | awk '/Core 0/ {print $3}' | tr -d '+')
-gpu=$(sensors | awk '/GPU/ {print $2}' | tr -d '+')
+# Get temperatures, removing "+" and ".0"
+cpu=$(sensors | awk '/Core 0/ {gsub(/\+|\.0/, "", $3); print $3}')
+gpu=$(sensors | awk '/GPU/ {gsub(/\+|\.0/, "", $2); print $2}')
 
 # Print temps
 echo "🌡 $cpu 🎨 $gpu"
