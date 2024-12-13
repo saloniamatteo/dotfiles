@@ -10,47 +10,79 @@ else
 	root="sudo"
 fi
 
-# Set fan speed to max, if not called with "-b" or "--boot" flag,
-# which tells us this script was called at boot. Only for ThinkPads.
-# see https://github.com/saloniamatteo/tp-xfan#requirements
-if ! [[ "$1" == "-b" || "$1" == "--boot" ]]; then
+# Set fan speed
+_set_fan_speed() {
 	echo "Setting fan speed"
 	echo "level disengaged" | $root tee /proc/acpi/ibm/fan
+}
+
+# Apply undervolt
+_undervolt() {
+	echo "Starting intel-undervolt"
+	$root rc-service intel-undervolt-loop start  >/dev/null 2>&1
+	$root intel-undervolt apply >/dev/null 2>&1
+}
+
+# Set cpu governor to performance
+_cpupower_perf() {
+	echo "Setting CPU governor to performance"
+	$root cpupower -c all set -b 0
+	$root cpupower frequency-set -g performance >/dev/null 2>&1
+}
+
+# Reserve hugepages
+_reserve_hugepages() {
+	echo "Reserving huge pages"
+	$root sysctl -w vm.nr_hugepages=1280 >/dev/null 2>&1
+	$root sysctl -w vm.dirty_ratio=40 >/dev/null 2>&1
+	$root sysctl -w vm.dirty_background_ratio=10 >/dev/null 2>&1
+	$root sysctl -w vm.swappiness=10 >/dev/null 2>&1
+}
+
+# Enable HW Prefetcher
+_enable_hwprefetch() {
+	echo "Enabling hardware prefetcher, setting MSR values"
+	MSR_FILE=/sys/module/msr/parameters/allow_writes
+
+	if test -e "$MSR_FILE"; then
+		echo "on" | $root tee $MSR_FILE
+	else
+		$root modprobe msr allow_writes=on
+	fi
+
+	if grep "Intel" /proc/cpuinfo > /dev/null;
+		then
+			echo "Detected Intel CPU"
+			$root wrmsr -a 0x1a4 0xf
+			echo "MSR register values for Intel applied"
+	fi
+}
+
+# Set fan speed to max. Only for ThinkPads.
+# See https://github.com/saloniamatteo/tp-xfan#requirements
+if ! [[ "$1" == "-b" || "$1" == "--boot" ]]; then
+	_set_fan_speed
 else
 	echo "Not setting fan speed (-b)"
 fi
 
 # Apply undervolt
-echo "Starting intel-undervolt"
-$root rc-service intel-undervolt-loop start  >/dev/null 2>&1
-$root intel-undervolt apply >/dev/null 2>&1
+_undervolt
 
-# Set CPU governor to performance
-echo "Setting CPU governor to performance"
-$root cpupower -c all set -b 0
-$root cpupower frequency-set -g performance >/dev/null 2>&1
-
-# Reserve huge pages
-echo "Reserving huge pages"
-$root sysctl -w vm.nr_hugepages=1280 >/dev/null 2>&1
-$root sysctl -w vm.dirty_ratio=40 >/dev/null 2>&1
-$root sysctl -w vm.dirty_background_ratio=10 >/dev/null 2>&1
-$root sysctl -w vm.swappiness=10 >/dev/null 2>&1
-
-# Set MSR values
-# Originally from xmrig, AMD section removed
-echo "Setting MSR"
-MSR_FILE=/sys/module/msr/parameters/allow_writes
-
-if test -e "$MSR_FILE"; then
-	echo "on" | $root tee $MSR_FILE
+# Set CPU governor to performance, if not called at boot
+if ! [[ "$1" == "-b" || "$1" == "--boot" ]]; then
+	_cpupower_perf
 else
-	$root modprobe msr allow_writes=on
+	echo "Not setting cpu governor to performance (-b)"
 fi
 
-if grep "Intel" /proc/cpuinfo > /dev/null;
-	then
-		echo "Detected Intel CPU"
-		$root wrmsr -a 0x1a4 0xf
-		echo "MSR register values for Intel applied"
+# Reserve huge pages, if not called at boot
+if ! [[ "$1" == "-b" || "$1" == "--boot" ]]; then
+	_reserve_hugepages
+else
+	echo "Not reserving huge pages (-b)"
 fi
+
+# Enable the hardware prefetcher (originally from xmrig, AMD section removed)
+# We want this to be always on.
+_enable_hwprefetch
