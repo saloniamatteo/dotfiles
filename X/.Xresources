@@ -45,9 +45,9 @@
 
 Xft.antialias: 1
 Xft.autohint: 1
-! Set DPI to 192 for a 2560x1440 screen
+! Set DPI to 180 for a 2560x1440 screen
 ! Set DPI to 96 for a smaller screen
-Xft.dpi: 192
+Xft.dpi: 180
 Xft.hinting: 1
 Xft.hintstyle: hintfull
 Xft.lcdfilter: lcddefault
