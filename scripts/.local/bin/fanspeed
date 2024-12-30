@@ -1,15 +1,15 @@
 #!/bin/bash
 # Get ThinkPad fan speed
 
-# Get fan speed
-speed=$(cat /proc/acpi/ibm/fan | awk '/level:/ {print $2}')
+# Get fan level (auto, max, 0-7) + speed (rpm)
+level=$(awk '/level:/ {print $2}' /proc/acpi/ibm/fan)
+speed=$(awk '/speed:/ {print $2}' /proc/acpi/ibm/fan)
 
 icon="💨"
 
-case $speed in
-	"auto") tspeed="auto" ;;
-	"disengaged") tspeed="max" ;;
-	*) tspeed="$speed" ;;
+case $level in
+	"auto") level="auto" ;;
+	"disengaged"|"full-speed") level="max" ;;
 esac
 
-echo "$icon $tspeed"
+echo "$icon $level ($speed)"
