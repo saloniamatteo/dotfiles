@@ -47,7 +47,7 @@ else
 fi
 
 # Check if microphone is being used/"captured"
-[[ ! -z $mic_capture ]] && micicon="[🎤]" || mic_icon="🎤"
+[[ ! -z $mic_capture ]] && micicon="[🎤]" || micicon="🎤"
 
 # Check mic volume
 if [ "$micvol" != "${micvol%\[MUTED\]}" ]; then
