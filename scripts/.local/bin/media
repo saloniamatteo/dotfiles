@@ -18,8 +18,8 @@ spkvol="$(wpctl get-volume @DEFAULT_SINK@)"
 micvol="$(wpctl get-volume @DEFAULT_SOURCE@)"
 
 # Get camera & mic status
-camera_capture=$(lsof /dev/video0)
-mic_capture=$(lsof /dev/snd/pcmC0D0c)
+camera_capture=$(lsof -l -L /dev/video0)
+mic_capture=$(lsof -l -L /dev/snd/pcmC0D0c)
 
 # Omit the . without calling and external program.
 split() {
@@ -43,23 +43,31 @@ else
 		* ) spkicon="🔇" ;;
 	esac
 
-	spkvol="$spkvol%"
+	spkvol="$spkvol%%"
 fi
+
+# Print speaker icon & volume
+printf "$spkicon $spkvol "
 
 # Check if microphone is being used/"captured"
 [[ ! -z $mic_capture ]] && micicon="[🎤]" || micicon="🎤"
+
+# Print mic icon
+printf "$micicon "
 
 # Check mic volume
 if [ "$micvol" != "${micvol%\[MUTED\]}" ]; then
 	micvol="off"
 else
 	micvol="${micvol#Volume: }"
-	micvol="$(printf "%.0f" "$(split "$micvol" ".")")"
-	micvol="$micvol%"
+	micvol="$(printf "%.0f" "$(split "$micvol" ".")")%%"
 fi
+
+# Print mic volume
+printf "$micvol "
 
 # Check if camera is being used/"captured"
 [[ ! -z $camera_capture ]] && camera_icon="[📸]" || camera_icon="📷"
 
-# Print volumes
-echo "$spkicon $spkvol $micicon $micvol $camera_icon"
+# Print camera status
+printf "$camera_icon"
