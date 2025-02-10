@@ -18,8 +18,8 @@ spkvol="$(wpctl get-volume @DEFAULT_SINK@)"
 micvol="$(wpctl get-volume @DEFAULT_SOURCE@)"
 
 # Get camera & mic status
-camera_capture=$(lsof -l -L /dev/video0)
-mic_capture=$(lsof -l -L /dev/snd/pcmC0D0c)
+camera_capture=$(fuser /dev/video0)
+mic_capture=$(fuser /dev/snd/pcmC0D0c)
 
 # Omit the . without calling and external program.
 split() {
