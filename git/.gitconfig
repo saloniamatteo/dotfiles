@@ -1,0 +1,56 @@
+[branch]
+	# Sort branches by commit date
+	sort = -committerdate
+[column]
+	ui = auto
+[commit]
+	# Sign commits with GPG
+	gpgsign = true
+	# Show file diffs with commit message
+	verbose = true
+[diff]
+	# Better diff algorithm (myers -> histogram)
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
+[fetch]
+	# Better fetching: try to keep as close to remote as possible
+	all = true
+	prune = true
+	pruneTags = true
+[help]
+	# Autocorrect
+	autocorrect = prompt
+[init]
+	# Set default branch to "master"
+	defaultBranch = master
+[merge]
+	# Instead of inserting the conlict markers from left and right,
+	# ask git to insert what the base of the merge conflict looked like
+	conflictstyle = zdiff3
+[push]
+	# Push the current branch to the same name on the remote
+	default = simple
+	# Automatically create the remote branch if it does not exist
+	autoSetupRemote = true
+	# Push local tags if not present on the remote
+	followTags = true
+[rebase]
+	# Easier rebasing
+	autoSquash = true
+	autoStash = true
+	updateRefs = true
+[rerere]
+	# Reuse recorded resolutions
+	# Useful if doing rebases with conflicts over and over again
+	autoupdate = true
+	enabled = true
+[tag]
+	gpgSign = true
+	# Better tag sorting
+	sort = version:refname
+[user]
+	email = CHANGEME
+	name = CHANGEME
+	signingkey = CHANGEME
