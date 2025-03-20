@@ -6,42 +6,60 @@
 " ----------------------------- "
 
 " Visual Options {{{
-" set tab size to 4
-set tabstop=4
-" show numbers at the left side of the terminal
-set number
-" show menu auto-completion options
-set wildmenu
-" highlight the current line (cul = cursorline)
-set cul
-" use fast terminal
-set ttyfast
-" redraw only when it is needed
-set lazyredraw
-" enable syntax
-syntax on
-set laststatus=2
-set encoding=UTF-8
-" don't show the current mode (it is shown in the status bar)
-set noshowmode
-" show the top status bar
-set showtabline=2
-set ruler
-" indentation
-set smartindent
-set autoindent
-set cindent
-set wrap
-set linebreak
-" show matching opening/closing brackets
-set showmatch
-" enable mouse
-set mouse=a
-set go=a
-" Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
-set splitbelow splitright
-" Set terminal title to filename
-set title titlestring=
+" Tabs {{{
+set tabstop=4			" number of visual spaces per TAB
+set softtabstop=4		" number of spaces in tab when editing
+set shiftwidth=4		" insert 4 spaces on a tab
+"set expandtab			" insert spaces when the TAB key is pressed
+" }}}
+
+" UI {{{
+set cul					" highlight the current line (cul = cursorline)
+set encoding=UTF-8		" set encoding to UTF-8
+set foldenable			" enable folding
+set foldlevelstart=10	" open most folds by defaults
+"set go=a				" formatoptions
+set laststatus=2		" enable top status bar
+set lazyredraw			" redraw only when needed
+set linebreak			" break long lines properly
+set mouse=a				" enable mouse
+set noshowmode			" don't show the current mode
+set number				" show numbers at the left side of the terminal
+"set relativenumber		" add numbers to each line on the left side
+set ruler				" show cursor position in status line
+set showmatch			" show matching opening/closing brackets
+set showtabline=2		" show the top status bar
+set splitbelow			" open new vertical split bottom
+set splitright			" open new horizontal splits right
+set title titlestring=	" set terminal title to filename
+set ttyfast				" use fast terminal
+set wrap				" wrap long lines onto the next line in the display
+syntax on				" enable syntax highlighting
+" }}}
+
+" Search {{{
+set hlsearch			" highlight search results
+set ignorecase			" case insensitive search
+set incsearch			" search as characters are entered
+set smartcase			" smart case matching
+" }}}
+
+" Indentation {{{
+set autoindent			" copy the previous line's indentation level
+set cindent				" advanced automatic identation for C & C++
+set smartindent			" automatically indent new lines properly
+" }}}
+
+" Spell-checking {{{
+"set spell				" enable spell-checking
+set spelllang=en_us		" set spell-checking language to en_US
+" }}}
+
+" Syntax highlighting {{{
+set complete+=kspell	" use the spell-checker as completion source
+set wildmenu			" show menu auto-completion options
+set wildmode=longest,list,full
+" }}}
 " }}}
 
 " OmniCompletion {{{
@@ -74,24 +92,6 @@ highlight PmenuSbar ctermbg=7 guibg=DarkGray
 highlight PmenuThumb guibg=Black
 " }}}
 
-" Search {{{
-" highlight search results
-set hlsearch
-" case insensitive search
-set ignorecase
-" smart case matching
-set smartcase
-" search as characters are entered
-set incsearch
-" }}}
-
-" Folds {{{
-" enable folding
-set foldenable
-" open most folds by defaults
-set foldlevelstart=10
-" }}}
-
 " Remaps {{{
 " NOTE: <CR> means line break/enter
 
@@ -102,7 +102,7 @@ map <leader>l :Neotree toggle<CR>
 map <leader>o :setlocal spell!<CR>
 
 " Clipboard {{{
-" NOTE: needs gVim or neoVim for clipboard capabilities
+" NOTE: needs gvim or neovim for clipboard capabilities
 " Using CTRL+C, copy the text to global clipboard and active selection
 vnoremap <C-c> "*y :let @+=@*<CR>
 " Using CTRL+V, paste the text from global clipboard
@@ -155,50 +155,51 @@ nnoremap <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
 
 " Plugins {{{
 " vim plug: https://github.com/junegunn/vim-plug
-" install packages by running :PlugInstall inside Vim
+" install packages by running :PlugInstall
+" update packages by running  :PlugUpdate
+" upgrade vim-plug by running :PlugUpgrade
 call plug#begin('~/.vim/plugged')
-" -------------------- "
-" Color schemes
+
+" Color schemes {{{
 " Tokyonight (:colorscheme tokyonight-{,night,storm,day,moon)
 Plug 'folke/tokyonight.nvim'
-" -------------------- "
-" UI
-" Vim dev-icons
-Plug 'ryanoasis/vim-devicons'
-" Vim status bar (lightline)
-Plug 'itchyny/lightline.vim'
-Plug 'sainnhe/lightline_foobar.vim'
-Plug 'delphinus/lightline-delphinus'
-" Git integration
-Plug 'lewis6991/gitsigns.nvim'
-" Show indentation
-Plug 'lukas-reineke/indent-blankline.nvim'
-" Color-coded indentation (requires indent-blankline)
-Plug 'TheGLander/indent-rainbowline.nvim'
-" Better syntax
-Plug 'sheerun/vim-polyglot'
-" Vim matchup (better % navigation)
-Plug 'andymass/vim-matchup'
-" Startup message (à-la-Emacs)
-Plug 'mhinz/vim-startify'
-" Neotree
-Plug 'nvim-lua/plenary.nvim' " neotree dependency
-Plug 'MunifTanjim/nui.nvim' " neotree dependency
-Plug 'nvim-neo-tree/neo-tree.nvim'
-" -------------------- "
-" Utils
-" Linter
-Plug 'w0rp/ale'
-" Tree sitter (better syntax)
+" }}}
+
+" Statusbar {{{
+Plug 'itchyny/lightline.vim'				" vim status bar
+Plug 'sainnhe/lightline_foobar.vim'			" lightline color schemes
+Plug 'delphinus/lightline-delphinus'		" lightline color scheme
+" }}}
+
+" Syntax {{{
+Plug 'andymass/vim-matchup'					" better matching via %
+Plug 'sheerun/vim-polyglot'					" better file syntax
+Plug 'w0rp/ale'								" asynchronous lint engine
+Plug 'windwp/nvim-ts-autotag'				" automatically close HTML tags
+Plug 'windwp/nvim-autopairs'				" auto pair & close brackets and quotes
+
+" Tree sitter integration & better syntax highlighting
 " Note: you also need to run :TSInstall <lang>,
 " where <lang> is the language you want.
 " I use the following:
-" bash, c, cpp, css, html, javascript,
-" markdown, php, vim
+" bash, c, cpp, css, html, javascript, markdown, php, scss, vim
 " To update installed files, run :TSUpdate
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-" Auto close HTML tags
-Plug 'windwp/nvim-ts-autotag'
+" }}}
+
+" Neotree {{{
+Plug 'nvim-lua/plenary.nvim' " neotree dependency
+Plug 'MunifTanjim/nui.nvim' " neotree dependency
+Plug 'nvim-neo-tree/neo-tree.nvim'
+" }}}
+
+" Eye candy {{{
+Plug 'mhinz/vim-startify'					" show startup message
+Plug 'ryanoasis/vim-devicons'				" add icons to vim
+Plug 'lewis6991/gitsigns.nvim'				" git integration
+Plug 'lukas-reineke/indent-blankline.nvim'	" show indent guides
+Plug 'TheGLander/indent-rainbowline.nvim'	" show colored indents
+" }}}
 call plug#end()
 " }}}
 
@@ -208,7 +209,7 @@ call plug#end()
 " this line will be modified if running in a TTY
 colorscheme tokyonight-moon
 
-" use terminal colors if we have truecolor support
+" set proper colors
 if $TERM =~ '^\(rxvt\|screen\|interix\|putty\|linux\)\(-.*\)\?$'
   set notermguicolors
   colorscheme koehler
@@ -219,19 +220,66 @@ endif
 " }}}
 
 " Plugin Options {{{
+" Autoclose brackets & quotes
+" Do not add closing pair if already present in the same line
+lua <<EOF
+require("nvim-autopairs").setup({
+	enable_check_bracket_line = false
+});
+EOF
+
+" Use treesitter to check for a pair
+lua <<EOF
+local npairs = require("nvim-autopairs")
+local Rule = require('nvim-autopairs.rule')
+
+npairs.setup({
+    check_ts = true,
+    ts_config = {
+        lua = {'string'},-- it will not add a pair on that treesitter node
+        javascript = {'template_string'},
+        java = false,-- don't check treesitter on java
+    }
+})
+
+local ts_conds = require('nvim-autopairs.ts-conds')
+
+-- press % => %% only while inside a comment or string
+npairs.add_rules({
+  Rule("%", "%", "lua")
+    :with_pair(ts_conds.is_ts_node({'string','comment'})),
+  Rule("$", "$", "lua")
+    :with_pair(ts_conds.is_not_ts_node({'function'}))
+})
+EOF
+
 " Gitsigns
 lua require("gitsigns").setup();
 
-" Indentation
+" Indent-rainbowline
 lua require("ibl").setup(require("indent-rainbowline").make_opts(opts));
 
 " Tree Sitter
-lua require("nvim-treesitter.configs").setup{highlight={enable=true}};
+lua <<EOF
+require("nvim-treesitter.configs").setup({
+	ensure_installed = {"bash", "c", "cpp", "css", "html", "javascript", "lua", "markdown", "php", "scss", "vim"},
+
+	highlight = {
+		enable = true
+	}
+});
+EOF
 
 " TS-Autotag
-lua require("nvim-ts-autotag").setup{opts={enable_close_on_slash=true}};
+lua <<EOF
+require("nvim-ts-autotag").setup({
+	opts = {
+		enable_close_on_slash = true
+	}
+});
+EOF
 
-" lightline-delphinus options
+" Lightline-delphinus
 let g:lightline_delphinus_use_powerline_glyphs = 1
 let g:lightline_delphinus_colorscheme = "nord_improved"
 
@@ -306,19 +354,6 @@ endfunction
 function! LightlineReadonly()
  	return &readonly ? 'RO' : ''
 endfunction
-" }}}
-
-" Spell-checking {{{
-" Enable spell-checking
-set nospell
-
-" Set spell-checking language to en_US
-set spelllang=en_us
-
-" Enable word completion
-set complete+=kspell
-set wildmode=longest,list,full
-
 " }}}
 
 " Others {{{
