@@ -185,9 +185,22 @@ set -o vi
 # "doas" bash completion
 # If you have app-shells/bash-completion installed
 complete -F _root_command doas
-# This doesn't require bash-completion, however
-# this doesn't complete arguments
+# ------------------------------------------------
+# The following doesn't require bash-completion,
+# however it doesn't complete arguments
 #complete -cf doas
+
+# FUCK!
+# (Command correction)
+# https://github.com/nvbn/thefuck
+eval "$(thefuck --alias)"
+
+# Launch keychain (ssh-agent management)
+# https://github.com/funtoo/keychain
+# Do this only if not under linux terminal
+if [ $TERM != "linux" ]; then
+	eval "$(keychain --eval --agents ssh id_rsa)"
+fi
 #< END OTHERS
 
 # Hand over shell to user
