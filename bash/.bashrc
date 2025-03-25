@@ -199,7 +199,10 @@ eval "$(thefuck --alias)"
 # https://github.com/funtoo/keychain
 # Do this only if not under linux terminal
 if [ $TERM != "linux" ]; then
-	eval "$(keychain --eval --agents ssh id_rsa)"
+	# Only run keychain if ssh-agent is running already
+	if ! [ -z $(pidof ssh-agent) ]; then
+		eval "$(keychain --eval --agents ssh id_rsa)"
+	fi
 fi
 #< END OTHERS
 
