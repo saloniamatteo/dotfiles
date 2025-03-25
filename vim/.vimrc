@@ -228,15 +228,33 @@ require("nvim-autopairs").setup({
 });
 EOF
 
-" automatically close "<"
-lua << EOF
+" automatically close "<" {{{
+lua <<EOF
 local Rule = require('nvim-autopairs.rule')
 local npairs = require('nvim-autopairs')
 
 npairs.add_rules({
-	Rule("<", ">", {"html", "php", "blade"})
+	Rule("<", ">", {"php", "blade"})
 })
 EOF
+" }}}
+
+" auto center the current line when inserting enter inside curly brackets {{{
+lua <<EOF
+require("nvim-autopairs").get_rule("{"):replace_map_cr(function()
+	local res = '<c-g>u<CR><CMD>normal! ====<CR><up><end><CR>'
+	local line = vim.fn.winline()
+	local height = vim.api.nvim_win_get_height(0)
+	-- Check if current line is within [1/3, 2/3] of the screen height.
+	-- If not, center the current line.
+	if line < height / 3 or height * 2 / 3 < line then
+		-- Here, 'x' is a placeholder to make sure the indentation doesn't break.
+		res = res .. 'x<ESC>zzs'
+	end
+	return res
+end)
+EOF
+" }}}
 
 " Gitsigns
 lua require("gitsigns").setup();
