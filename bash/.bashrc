@@ -6,6 +6,11 @@ if [[ $- != *i* ]] ; then
 	return
 fi
 
+# Launch tmux if available, and if TERM is not screen or tmux
+if command -v tmux &> /dev/null && [[ ! "$TERM" == linux ]] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+  exec tmux
+fi
+
 #> EXPORTS
 
 # Colored LS output
@@ -20,7 +25,7 @@ export CC="gcc"
 export PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h \[$(tput setaf 5)\]\W\[$(tput setaf 1)\]]\[$(tput setaf 2)\] \\$ \[$(tput sgr0)\]"
 
 # Preferred editor: If neovim is found, use it; otherwise use vim
-[ $(which nvim) ] && export EDITOR='nvim' || export EDITOR='vim'
+command -v nvim &> /dev/null && export EDITOR='nvim' || export EDITOR='vim'
 
 # Correctly set language variables
 # LANG is the system language (en_US),
@@ -62,13 +67,13 @@ export PATH="$HOME/.local/bin:$HOME/.config/scripts:/etc/eselect/wine/bin:$PATH"
 export KEYTIMEOUT=1
 
 # Set default Browser
-export BROWSER="librewolf-bin"
+command -v librewolf-bin &> /dev/null && export BROWSER="librewolf-bin"
 
 # Use GPG with SSH
 export GPG_TTY=$(tty)
 
 # SSH askpass
-export SSH_ASKPASS="/usr/bin/lxqt-openssh-askpass"
+command -v lxqt-openssh-askpass &> /dev/null && export SSH_ASKPASS="$(which lxqt-openssh-askpass)"
 
 # Xauthority
 # Uncomment this line if you DON'T use a display manager
@@ -78,6 +83,10 @@ export XAUTHORITY=$HOME/.Xauthority
 # Wine settings
 export WINEFSYNC=1
 export WINE_LARGE_ADDRESS_AWARE=1
+
+# fzf tab completion with qq
+# example: "cd qq<TAB>" opens fzf
+export FZF_COMPLETION_TRIGGER="qq"
 
 #> FUNCTIONS
 # Remove colors from file (ANSI escape sequences)
@@ -146,6 +155,28 @@ song() {
 		--audio-quality 0 -c -i "$1" -o $save_loc
 }
 
+# Convert image to webp
+# If $2 is "-d", remove original picture
+towebp() {
+	extension="${1##*.}"
+	cwebp "$1" -o "${1/$extension/webp}"
+
+	if [ "$2" == '-d' ]; then
+		rm "$1"
+	fi
+}
+
+# Convert image to webp (higher quality)
+# If $2 is "-d", remove original picture
+towebp_hi() {
+	extension="${1##*.}"
+	cwebp -z 6 "$1" -o "${1/$extension/webp}"
+
+	if [ "$2" == '-d' ]; then
+		rm "$1"
+	fi
+}
+
 # Convert any supported file to mp3
 tomp3() {
 	extension="${1##*.}"
@@ -168,6 +199,10 @@ source ~/.aliases
 
 # BLE
 source ~/.local/share/blesh/ble.sh
+
+# fzf tab completions
+source /usr/share/bash-completion/completions/fzf
+source /usr/share/fzf/key-bindings.bash
 #< END SOURCES
 
 #> OTHERS
@@ -193,7 +228,7 @@ complete -F _root_command doas
 # FUCK!
 # (Command correction)
 # https://github.com/nvbn/thefuck
-eval "$(thefuck --alias)"
+command -v thefuck &> /dev/null && eval "$(thefuck --alias)"
 
 # Launch keychain (ssh-agent management)
 # https://github.com/funtoo/keychain
@@ -207,4 +242,4 @@ fi
 #< END OTHERS
 
 # Hand over shell to user
-clear; cd; echo "Successfully started bash"
+clear; echo "Successfully started bash"

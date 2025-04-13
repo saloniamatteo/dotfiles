@@ -9,14 +9,11 @@
 # make programs verbose
 alias \
 	cp="cp -v" \
-	less='less -RS' \
 	ln="ln -v" \
 	ls="ls --group-directories-first --color=always" \
 	mv="mv -v" \
 	rm="rm -v" \
-	rsync="rsync -v" \
-	sl="sl -alc" \
-	su="su -l"
+	rsync="rsync -v"
 
 # add color support to grep and others
 alias \
@@ -24,24 +21,26 @@ alias \
 	egrep='grep -E --color=always' \
 	fgrep='grep -F --color=always' \
 	grep='grep --color=auto' \
+	less="less -RS" \
 	vdir='vdir --color=always'
 
-# miscellaneous
+# utilities
 alias \
-	brasero="dbus-launch brasero" \
 	debug="valgrind --tool=memcheck --leak-check=yes --leak-check=full --show-reachable=yes --leak-resolution=high --trace-children=yes --track-origins=yes -s" \
-	firefox="librewolf" \
-	keychain-add="keychain ~/.ssh/id_rsa" \
-	java="/opt/openjdk-bin-17/bin/java" \
-	mail="neomutt" \
-	mpv-hi="mpv --opengl-glfinish=yes --opengl-swapinterval=0 --vo=gpu --hwdec=vaapi --opengl-pbo" \
-	neofetch="neofetch --color_blocks off" \
+	f="cd \$(find * -type d | fzf --style=full)" \
 	poweroff='doas /sbin/poweroff' \
 	reboot='doas /sbin/reboot' \
-	rot13='tr a-zA-Z n-za-mN-ZA-M' \
+	setx='setxkbmap it; xset r rate 250 50; xset m 1 1; xset s off; xset +dpms; xset dpms 600 600 600; xrdb -merge ~/.Xresources' \
 	startk='dbus-run-session startplasma-wayland' \
+
+# misc
+alias \
+	firefox="librewolf" \
+	mpv-hi="mpv --opengl-glfinish=yes --opengl-swapinterval=0 --vo=gpu --hwdec=vaapi --opengl-pbo" \
+	neofetch="neofetch --color_blocks off" \
+	rain='~/go/bin/rain' \
 	surf="tabbed -c surf -BNPTeg & disown" \
-	vimpager='/usr/share/vim/vim82/macros/less.sh'
+	sxiv="nsxiv"
 
 # Video4Linux2 virtual webcam settings
 # check out https://github.com/umlaeute/v4l2loopback/wiki/GStreamer for more
