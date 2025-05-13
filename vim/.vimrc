@@ -359,13 +359,5 @@ function! LightlineReadonly()
 endfunction
 " }}}
 
-" Others {{{
-" Disable VimInfo & ShaDa
-let viminfo="/dev/null"
-let viminfofile="/dev/null"
-let shada="/dev/null"
-let shadafile="/dev/null"
-" }}}
-
 " DO NOT REMOVE THIS LINE
 " vim:foldmethod=marker:foldlevel=0
