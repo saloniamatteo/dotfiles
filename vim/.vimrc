@@ -25,7 +25,7 @@ set linebreak			" break long lines properly
 set mouse=a				" enable mouse
 set noshowmode			" don't show the current mode
 set number				" show numbers at the left side of the terminal
-"set relativenumber		" add numbers to each line on the left side
+set relativenumber		" numbers on the left side are relative to the cursor position
 set ruler				" show cursor position in status line
 set showmatch			" show matching opening/closing brackets
 set showtabline=2		" show the top status bar
@@ -95,11 +95,39 @@ highlight PmenuThumb guibg=Black
 " Remaps {{{
 " NOTE: <CR> means line break/enter
 
-" Toggle Neotree with \l
-map <leader>l :Neotree toggle<CR>
-
 " Set spell check to <leader>o (\o; orthography)
 map <leader>o :setlocal spell!<CR>
+
+" Plugins {{{
+" Use "s" to navigate with EasyMotion
+"
+" Note:
+" B, E, W -> word: characters separated by whitespace
+" b, e, w -> word: characters separated by whitespace or punctuation
+"
+" Hint: use these motions:
+"	Quick move:
+"		s{w,W}  -> Go to the beginning of next word
+"		s{e,E}  -> Go to the end of next word
+"		s{b,B}  -> Go to the beginning of previous word
+"		sg{e,E} -> Go to the end of previous word
+"
+"	Search:
+"		sf{char} -> Go to next {char}
+"		sF{char} -> Go to previous {char}
+"		st{char} -> Go to next {char}, one space before
+"		sT{char} -> Go to previous {char}, one space after
+map s <Plug>(easymotion-prefix)
+
+" Use s + hjkl for better navigation
+map sh <Plug>(easymotion-linebackward)
+map sj <Plug>(easymotion-j)
+map sk <Plug>(easymotion-k)
+map sl <Plug>(easymotion-lineforward)
+
+" Toggle Neotree with \l
+map <leader>l :Neotree toggle<CR>
+" }}}
 
 " Clipboard {{{
 " NOTE: needs gvim or neovim for clipboard capabilities
@@ -200,6 +228,11 @@ Plug 'lewis6991/gitsigns.nvim'				" git integration
 Plug 'lukas-reineke/indent-blankline.nvim'	" show indent guides
 Plug 'TheGLander/indent-rainbowline.nvim'	" show colored indents
 " }}}
+
+" Others {{{
+Plug 'easymotion/vim-easymotion'			" move quicker
+Plug 'm4xshen/hardtime.nvim'				" break bad movement habits
+" }}}
 call plug#end()
 " }}}
 
@@ -220,6 +253,28 @@ endif
 " }}}
 
 " Plugin Options {{{
+" Hardtime
+lua <<EOF
+require("hardtime").setup({
+	disable_mouse = false,
+	disabled_filetypes = {},
+	disabled_keys = {
+		-- re-enable arrow keys
+	   ["<Up>"] = false,
+	   ["<Down>"] = false,
+	   ["<Left>"] = false,
+	   ["<Right>"] = false,
+	},
+
+	-- either "block" or "hint"
+	restriction_mode = "hint"
+});
+EOF
+
+" EasyMotion options
+let g:EasyMotion_smartcase = 1		" v will match both v and V, but V will match V only
+let g:EasyMotion_startofline = 0	" keep cursor column when JK motion
+
 " Autoclose brackets & quotes
 " Do not add closing pair if already present in the same line
 lua <<EOF
