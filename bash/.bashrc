@@ -84,11 +84,40 @@ export XAUTHORITY=$HOME/.Xauthority
 export WINEFSYNC=1
 export WINE_LARGE_ADDRESS_AWARE=1
 
-# fzf tab completion with qq
-# example: "cd qq<TAB>" opens fzf
-export FZF_COMPLETION_TRIGGER="qq"
+# CTRL-R -> Paste the selected command from history onto the command-line
+# Change "copyq copy -" if you don't use CopyQ as your clipboard implementation
+# with something like "xclip", "xsel", or "pbcopy".
+export FZF_CTRL_R_OPTS="
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | copyq copy -)+abort'
+  --color header:italic
+  --header 'Press CTRL-Y to copy command into clipboard'"
+
+# Use 'qq' as the completion trigger instead of '~~'
+export FZF_COMPLETION_TRIGGER='qq'
+
+# Options for path completion (e.g. vim **<TAB>)
+#export FZF_COMPLETION_PATH_OPTS='--walker file,dir,follow,hidden'
+export FZF_COMPLETION_PATH_OPTS='--walker file,dir,follow'
+
+# Options for directory completion (e.g. cd **<TAB>)
+export FZF_COMPLETION_DIR_OPTS='--walker dir,follow'
 
 #> FUNCTIONS
+# Advanced customization of fzf options via _fzf_comprun function
+# - The first argument to the function is the name of the command.
+# - You should make sure to pass the rest of the arguments ($@) to fzf.
+_fzf_comprun() {
+  local command=$1
+  shift
+
+  case "$command" in
+    cd)           fzf --preview 'tree -C {} | head -200'   "$@" ;;
+    export|unset) fzf --preview "eval 'echo \$'{}"         "$@" ;;
+    ssh)          fzf --preview 'dig {}'                   "$@" ;;
+    *)            fzf --preview 'bat -n --color=always {}' "$@" ;;
+  esac
+}
+
 # Remove colors from file (ANSI escape sequences)
 decolorise() {
 	sed 's/\x1B[@A-Z\\\]^_]\|\x1B\[[0-9:;<=>?]*[-!"#$%&'"'"'()*+,.\/]*[][\\@A-Z^_`a-z{|}~]//g' "$1"
@@ -203,15 +232,54 @@ source ~/.local/share/blesh/ble.sh
 # fzf tab completions
 source /usr/share/bash-completion/completions/fzf
 source /usr/share/fzf/key-bindings.bash
+# OR
+#ble-import integration/fzf-completion
+#ble-import integration/fzf-key-bindings
+#ble-import integration/fzf-menu
+
+# Disable cd builtin completion to use with fzf
+ble-import -C 'unset -f ble/cmdinfo/complete:cd' core-complete
+
+# Show git info in RPS1. The following are shown:
+# - directory name
+# - branch
+# - commit hash
+# - path (relative to root directory)
+ble-import contrib/prompt-git
+
+# Show command exec time in RPS1
+ble-import contrib/prompt-elapsed
 #< END SOURCES
 
 #> OTHERS
-if [ "$TERM" == "linux" ]; then
-	bleopt prompt_command_changes_layout=1
-fi
+# BLE (https://github.com/akinomyoga/ble.sh) settings
+# RPS1: show command exec time + git info (if available)
+bleopt prompt_rps1='\g{fg=69,italic}\q{contrib/elapsed} \g{fg=7}\q{contrib/git-info}'
+#bleopt prompt_rps1='\g{fg=69,italic}\q{contrib/elapsed}'
+
+# Share history between sessions
+bleopt history_share=1
+
+# Completions must finish within 1.25 seconds
+bleopt complete_limit_auto=1250
+bleopt complete_timeout_auto=1250
+#bleopt complete_limit_auto_menu=100
+#bleopt complete_polling_cycle=50
+#bleopt complete_timeout_compvar=200
 
 # Set BLE EOL string
 bleopt prompt_eol_mark='⏎'
+
+if [ "$TERM" == "linux" ]; then
+	# this option specifies whether the commands called from the blehook PRECMD
+	# or the variable PROMPT_COMMAND output texts to the terminal and changes the layout.
+	# when a non-empty value is specified, ble.sh resets the layout before
+	# running the hooks PRECMD and PROMPT_COMMAND and restores the layout after running the hooks.
+	# when a empty value is specified, ble.sh assumes that these hooks do not output texts to
+	# the terminal and do not changes the cursor positions and skip the special treatment.
+	bleopt prompt_command_changes_layout=1
+fi
+
 
 # Vim mode
 #set editing-mode vi
@@ -234,8 +302,8 @@ command -v thefuck &> /dev/null && eval "$(thefuck --alias)"
 # https://github.com/funtoo/keychain
 # Do this only if not under linux terminal
 if [ $TERM != "linux" ]; then
-	# Only run keychain if ssh-agent is running already
-	if ! [ -z $(pidof ssh-agent) ]; then
+	# Eval keychain only if identities have been added
+	if ! [ -z $(keychain -l | grep "error\|no identities") ]; then
 		eval "$(keychain --eval --agents ssh id_rsa)"
 	fi
 fi
