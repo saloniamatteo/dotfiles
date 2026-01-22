@@ -4,7 +4,7 @@
 [ $(which doas 2>/dev/null) ] && alias sudo="doas"
 
 # use neovim instead of vim if nvim is installed
-[ $(which nvim 2>/dev/null) ] && alias vim="nvim" && alias vmi="nvim" || alias vmi = "vim"
+[ $(which nvim 2>/dev/null) ] && alias vim="nvim" && alias vmi="nvim" || alias vmi="vim"
 
 # make programs verbose
 alias \
