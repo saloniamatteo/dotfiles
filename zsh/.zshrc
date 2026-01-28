@@ -35,7 +35,7 @@ export LC_IDENTIFICATION="it_IT.UTF-8"
 
 # Colored man pages (& less colors)
 export LESS_TERMCAP_mb=$(tput bold; tput setaf 2) # green
-export LESS_TERMCAP_md=$(tput bold; tput setaf 3) # yellow
+export LESS_TERMCAP_md=$(tput bold; tput setaf 5) # purple
 export LESS_TERMCAP_me=$(tput sgr0)
 export LESS_TERMCAP_so=$(tput bold; tput setaf 3; tput setab 4) # yellow on blue
 export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
@@ -96,6 +96,10 @@ export FZF_COMPLETION_PATH_OPTS='--walker file,dir,follow'
 
 # Options for directory completion (e.g. cd **<TAB>)
 export FZF_COMPLETION_DIR_OPTS='--walker dir,follow'
+
+# zsh-autosuggestions configuration
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="bg=#dedede,fg=black"  # Style
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)          # How to generate suggestions
 
 #> FUNCTIONS
 # Advanced customization of fzf options via _fzf_comprun function
@@ -218,12 +222,23 @@ tomp4() {
 # Aliases
 source ~/.aliases
 
+# Command-not-found
+# https://github.com/Nowa-Ammerlaan/command-not-found-gentoo
+source /etc/bash/bashrc.d/command-not-found.sh
+
 # Fast Syntax Highlighting
+# https://github.com/zdharma-continuum/fast-syntax-highlighting
 source ~/software/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 # fzf tab completions & reverse history search
+# https://github.com/junegunn/fzf
 source <(fzf --zsh)
 source /usr/share/fzf/key-bindings.zsh
+
+# zsh-autosuggestions (fish-like autosuggestions)
+# a.k.a. as soon as you start typing, the last command will be previewed
+# https://github.com/zsh-users/zsh-autosuggestions
+source ~/software/zsh-autosuggestions/zsh-autosuggestions.zsh
 #< END SOURCES
 
 #> OTHERS
