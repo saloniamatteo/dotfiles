@@ -219,10 +219,15 @@ tomp4() {
 #< END FUNCTIONS
 
 #> SOURCES
+autoload -U compinit; compinit
+
 # Aliases
 source ~/.aliases
 
 # Command-not-found
+# Debian: install command-not-found and uncomment the following line:
+# source /etc/zsh_command_not_found
+# You can then delete/comment the 2 lines below.
 # https://github.com/Nowa-Ammerlaan/command-not-found-gentoo
 source /etc/bash/bashrc.d/command-not-found.sh
 
@@ -233,12 +238,21 @@ source ~/software/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 # fzf tab completions & reverse history search
 # https://github.com/junegunn/fzf
 source <(fzf --zsh)
+# Debian: uncomment the line below
+# source /usr/share/doc/fzf/examples/key-bindings.zsh
+# You can then delete/comment the line below.
 source /usr/share/fzf/key-bindings.zsh
 
 # zsh-autosuggestions (fish-like autosuggestions)
 # a.k.a. as soon as you start typing, the last command will be previewed
 # https://github.com/zsh-users/zsh-autosuggestions
 source ~/software/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Kubernetes completions
+command -v helm &> /dev/null && source <(helm completion zsh)
+command -v kubeadm &> /dev/null && source <(kubeadm completion zsh)
+command -v kubectl &> /dev/null && source <(kubectl completion zsh)
+
 #< END SOURCES
 
 #> OTHERS
@@ -247,9 +261,6 @@ set -o vi
 
 # Change directory without typing cd
 setopt autocd
-
-# Gentoo completions (app-shells/gentoo-zsh-completions)
-autoload -U compinit; compinit
 
 # Completions
 zstyle ':completion:*' completer _extensions _complete _approximate                   # Enable all completers
@@ -264,15 +275,6 @@ zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'                 
 zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'             # Show warnings (none found)
 zstyle ':completion::complete:*' use-cache 1                                          # Enable cache
 
-# Starship
-# https://starship.rs/guide
-eval "$(starship init zsh)"
-
-# FUCK!
-# (Command correction)
-# https://github.com/nvbn/thefuck
-command -v thefuck &> /dev/null && eval "$(thefuck --alias)"
-
 # Launch keychain (ssh-agent management)
 # https://github.com/funtoo/keychain
 # Do this only if not under linux terminal
@@ -283,6 +285,10 @@ if [ $TERM != "linux" ]; then
     fi
 fi
 #< END OTHERS
+
+# Starship prompt
+# https://starship.rs/guide
+eval "$(starship init zsh)"
 
 # Hand over shell to user
 clear; echo "Successfully started zsh"
