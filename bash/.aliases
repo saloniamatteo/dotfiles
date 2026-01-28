@@ -1,10 +1,11 @@
 # -*- bash -*-
 
 # use doas instead of sudo
-[ $(which doas 2>/dev/null) ] && alias sudo="doas"
+#[ $(which doas 2>/dev/null) ] && alias sudo="doas"
 
 # use neovim instead of vim if nvim is installed
-[ $(which nvim 2>/dev/null) ] && alias vim="nvim" && alias vmi="nvim" || alias vmi="vim"
+[ $(which nvim 2>/dev/null) ] && alias vi="nvim" || alias vi = "vim"
+[ $(which nvim 2>/dev/null) ] && alias vim="nvim" && alias vmi="nvim" || alias vmi = "vim"
 
 # make programs verbose
 alias \
@@ -13,7 +14,7 @@ alias \
 	ls="ls --group-directories-first --color=always" \
 	mv="mv -v" \
 	rm="rm -v" \
-	rsync="rsync -v"
+	rsync="rsync -v" \
 
 # add color support to grep and others
 alias \
@@ -22,25 +23,41 @@ alias \
 	fgrep='grep -F --color=always' \
 	grep='grep --color=auto' \
 	less="less -RS" \
-	vdir='vdir --color=always'
+	vdir='vdir --color=always' \
 
-# utilities
+# easier directory navigation
+alias \
+	cd1='cd ..' \
+	cd2='cd ../..' \
+	cd3='cd ../../..' \
+
+# ansible
+alias \
+	ap="ansible-playbook" \
+	av="ansible-vault" \
+
+# program & system utils
 alias \
 	debug="valgrind --tool=memcheck --leak-check=yes --leak-check=full --show-reachable=yes --leak-resolution=high --trace-children=yes --track-origins=yes -s" \
-	f="cd \$(find * -type d | fzf --style=full)" \
+	measure-power="doas powerstat -cDgHRt" \
 	poweroff='doas /sbin/poweroff' \
 	reboot='doas /sbin/reboot' \
 	setx='setxkbmap it; xset r rate 250 50; xset m 1 1; xset s off; xset +dpms; xset dpms 600 600 600; xrdb -merge ~/.Xresources' \
 	startk='dbus-run-session startplasma-wayland' \
 
-# misc
+# shell QoL
+alias \
+	f="cd \$(find * -type d | fzf --style=full)" \
+	neofetch="neofetch --color_blocks off" \
+
+# programs
 alias \
 	firefox="librewolf" \
 	mpv-hi="mpv --opengl-glfinish=yes --opengl-swapinterval=0 --vo=gpu --hwdec=vaapi --opengl-pbo" \
-	neofetch="neofetch --color_blocks off" \
 	rain='~/go/bin/rain' \
 	surf="tabbed -c surf -BNPTeg & disown" \
-	sxiv="nsxiv"
+	sxiv="nsxiv" \
+	virtssh="virt-manager -c 'qemu+ssh://ercole/system'" \
 
 # Video4Linux2 virtual webcam settings
 # check out https://github.com/umlaeute/v4l2loopback/wiki/GStreamer for more
@@ -62,4 +79,4 @@ alias \
 # mining
 alias \
 	benchmark='doas xmrig --bench=1M --submit -t 4 --randomx-1gb-pages --cpu-no-yield --cpu-priority 5 --randomx-mode fast --asm intel --randomx-no-numa --no-color --cpu-affinity 0xFF -a rx/0' \
-	mine-xmrig='doas schedtool -a 0x255 -n -20 -e xmrig -o pool.example.com:4444 -u CHANGEME+180000 -k --rig-id matteo --randomx-1gb-pages --cpu-no-yield --cpu-priority 5 --randomx-mode fast --asm intel --randomx-no-numa --no-color --print-time 120 --cpu-affinity 0x255 -a rx/0 -t 4 --huge-pages-jit --argon2-impl=AVX2'
+	mine-xmrig='doas schedtool -a 0x255 -n -20 -e xmrig -o pool.example.com:1234 -u CHANGEME+DIFFICULTY -k --rig-id RIG_ID --randomx-1gb-pages --cpu-no-yield --cpu-priority 5 --randomx-mode fast --asm intel --randomx-no-numa --no-color --print-time 120 --cpu-affinity 0x255 -a rx/0 -t 4 --huge-pages-jit --argon2-impl=AVX2'
