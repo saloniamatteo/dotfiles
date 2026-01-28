@@ -249,9 +249,9 @@ source /usr/share/fzf/key-bindings.zsh
 source ~/software/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Kubernetes completions
-command -v helm &> /dev/null && source <(helm completion zsh)
-command -v kubeadm &> /dev/null && source <(kubeadm completion zsh)
-command -v kubectl &> /dev/null && source <(kubectl completion zsh)
+for program in cilium helm kubeadm kubectl; do
+  command -v $program &> /dev/null && source <($program completion zsh)
+done
 
 #< END SOURCES
 
