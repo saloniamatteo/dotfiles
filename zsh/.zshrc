@@ -311,8 +311,13 @@ if [ $TERM != "linux" ]; then
 fi
 #< END OTHERS
 
-# Starship prompt
-# https://starship.rs/guide
+# Starship prompt (https://starship.rs/guide)
+# NOTE: your terminal must have a Nerd Font font, otherwise
+# the symbols will not display properly.
+# --------------------------------------------------------------------
+# Arch: sudo pacman -S starship
+# Debian: sudo apt install starship
+# Gentoo: sudo emerge -a starship
 eval "$(starship init zsh)"
 
 # Hand over shell to user
