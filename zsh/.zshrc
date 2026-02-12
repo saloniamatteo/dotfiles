@@ -248,7 +248,7 @@ source ~/software/fsh/fast-syntax-highlighting.plugin.zsh
 # Debian: sudo apt install fzf
 # Gentoo: sudo emerge -a fzf
 source <(fzf --zsh)
-# Gentoo/Arch:
+# Arch/Gentoo:
 source /usr/share/fzf/key-bindings.zsh
 # --------------------------------------------------------------------
 # Debian:
