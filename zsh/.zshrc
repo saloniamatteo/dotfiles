@@ -220,35 +220,57 @@ tomp4() {
 
 #> SOURCES
 autoload -U compinit; compinit
+zmodload zsh/complist
 
 # Aliases
-source ~/.aliases
+[ -f ~/.aliases ] && source ~/.aliases
 
 # Command-not-found
-# Debian: install command-not-found and uncomment the following line:
+# Arch: sudo pacman -S pkgfile
+# Then uncomment: (default)
+source /usr/share/doc/pkgfile/command-not-found.zsh
+# --------------------------------------------------------------------
+# Debian: sudo apt install command-not-found; sudo apt-file update
+# Then uncomment:
 # source /etc/zsh_command_not_found
-# You can then delete/comment the 2 lines below.
-# https://github.com/Nowa-Ammerlaan/command-not-found-gentoo
-source /etc/bash/bashrc.d/command-not-found.sh
+# --------------------------------------------------------------------
+# Gentoo: install https://github.com/Nowa-Ammerlaan/command-not-found-gentoo
+# Then uncomment:
+# source /etc/bash/bashrc.d/command-not-found.sh
 
 # Fast Syntax Highlighting
-# https://github.com/zdharma-continuum/fast-syntax-highlighting
-source ~/software/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+# mkdir ~/software
+# git clone https://github.com/zdharma-continuum/fast-syntax-highlighting ~/software/fsh
+source ~/software/fsh/fast-syntax-highlighting.plugin.zsh
 
-# fzf tab completions & reverse history search
-# https://github.com/junegunn/fzf
+# fzf: tab completions & reverse history search (https://github.com/junegunn/fzf)
+# Arch: sudo pacman -S fzf
+# Debian: sudo apt install fzf
+# Gentoo: sudo emerge -a fzf
 source <(fzf --zsh)
-# Debian: uncomment the line below
-# source /usr/share/doc/fzf/examples/key-bindings.zsh
-# You can then delete/comment the line below.
+# Gentoo/Arch:
 source /usr/share/fzf/key-bindings.zsh
+# --------------------------------------------------------------------
+# Debian:
+# source /usr/share/doc/fzf/examples/key-bindings.zsh
 
-# zsh-autosuggestions (fish-like autosuggestions)
+# zsh-autosuggestions: fish-like autosuggestions (https://github.com/zsh-users/zsh-autosuggestions)
 # a.k.a. as soon as you start typing, the last command will be previewed
-# https://github.com/zsh-users/zsh-autosuggestions
-source ~/software/zsh-autosuggestions/zsh-autosuggestions.zsh
+# Arch: sudo pacman -S zsh-autosuggestions
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+# --------------------------------------------------------------------
+# Debian: sudo apt install zsh-autosuggestions
+# Then uncomment:
+# source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# --------------------------------------------------------------------
+# Gentoo:
+# mkdir ~/software
+# git clone https://github.com/zsh-users/zsh-autosuggestions ~/software/zsh-autosuggestions
+# Then uncomment:
+# source ~/software/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Kubernetes completions
+# For each command, if it exists in $PATH, a completion will be added
 for program in cilium helm kubeadm kubectl; do
   command -v $program &> /dev/null && source <($program completion zsh)
 done
@@ -274,6 +296,9 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}                   
 zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'                       # Show messages
 zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'             # Show warnings (none found)
 zstyle ':completion::complete:*' use-cache 1                                          # Enable cache
+
+# Bind Shift+TAB to go back in menu completions
+bindkey -M menuselect '^[[Z' reverse-menu-complete
 
 # Launch keychain (ssh-agent management)
 # https://github.com/funtoo/keychain
