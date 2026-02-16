@@ -2,7 +2,7 @@
 # This script sets the level/speed of the ThinkPad fan
 
 # if doas is installed, use it
-[ $(which doas) ] && root="doas" || root="sudo"
+[ $(which doas 2>/dev/null) ] && root="doas" || root="sudo"
 
 level="$1"
 

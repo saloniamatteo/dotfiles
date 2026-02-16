@@ -8,7 +8,7 @@
 
 # Check if doas is installed
 # If it is, use it instead of sudo
-[ $(which doas) ] && root="doas" || root="sudo"
+[ $(which doas 2>/dev/null) ] && root="doas" || root="sudo"
 
 # Disable the touchpad
 synclient TouchpadOff=1

@@ -2,7 +2,7 @@
 # this script will setup everything to start mining.
 
 # use doas if installed
-[ $(which doas) ] && root="doas" || root="sudo"
+[ $(which doas 2>/dev/null) ] && root="doas" || root="sudo"
 
 # kill unnecessary services
 printf "\nKilling unnecessary services! \n\n"
