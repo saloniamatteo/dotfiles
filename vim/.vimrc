@@ -232,6 +232,7 @@ Plug 'TheGLander/indent-rainbowline.nvim'	" show colored indents
 " Others {{{
 Plug 'easymotion/vim-easymotion'			" move quicker
 Plug 'm4xshen/hardtime.nvim'				" break bad movement habits
+Plug 'Kicamon/markdown-table-mode.nvim'		" easier markdown table editing
 " }}}
 call plug#end()
 " }}}
@@ -319,10 +320,16 @@ lua require("ibl").setup(require("indent-rainbowline").make_opts(opts));
 
 " Tree Sitter
 lua <<EOF
-require("nvim-treesitter.configs").setup({
-	ensure_installed = {"bash", "c", "cpp", "css", "html", "javascript", "lua", "markdown", "php", "scss", "vim"},
+require("nvim-treesitter.config").setup({
+	auto_install = true,
+	ensure_installed = {"bash", "c", "cpp", "css", "dockerfile", "html", "javascript", "latex", "lua", "make", "markdown", "markdown_inline", "php", "scss", "vim", "zsh"},
 
 	highlight = {
+		enable = true,
+		additional_vim_regex_highlighting = {"bash", "c", "cpp", "css", "dockerfile", "html", "javascript", "latex", "lua", "make", "markdown", "markdown_inline", "php", "scss", "vim", "zsh"},
+	},
+
+	indent = {
 		enable = true
 	}
 });
@@ -336,6 +343,24 @@ require("nvim-ts-autotag").setup({
 	}
 });
 EOF
+
+" Markdown tables
+lua << EOF
+require('markdown-table-mode').setup({
+  filetype = {
+    '*.md',
+  },
+  options = {
+    insert = true, -- when typing "|"
+    insert_leave = true, -- when leaving insert
+    pad_separator_line = false, -- add space in separator line
+    alig_style = 'default', -- default, left, center, right
+  },
+})
+EOF
+
+" Run :Mtm automatically for markdown files
+autocmd FileType markdown :Mtm
 
 " Lightline-delphinus
 let g:lightline_delphinus_use_powerline_glyphs = 1
