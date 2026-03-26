@@ -233,6 +233,7 @@ Plug 'TheGLander/indent-rainbowline.nvim'	" show colored indents
 Plug 'easymotion/vim-easymotion'			" move quicker
 Plug 'm4xshen/hardtime.nvim'				" break bad movement habits
 Plug 'Kicamon/markdown-table-mode.nvim'		" easier markdown table editing
+Plug 'vimwiki/vimwiki'						" personal wiki
 " }}}
 call plug#end()
 " }}}
