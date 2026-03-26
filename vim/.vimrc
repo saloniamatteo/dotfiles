@@ -360,8 +360,9 @@ require('markdown-table-mode').setup({
 })
 EOF
 
-" Run :Mtm automatically for markdown files
+" Run :Mtm automatically for markdown & vimwiki files
 autocmd FileType markdown :Mtm
+autocmd FileType vimwiki :Mtm
 
 " Lightline-delphinus
 let g:lightline_delphinus_use_powerline_glyphs = 1
