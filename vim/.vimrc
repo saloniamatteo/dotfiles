@@ -255,6 +255,11 @@ endif
 " }}}
 
 " Plugin Options {{{
+" TODO: clean up
+
+" Vimwiki: run only on .wiki files
+let g:vimwiki_ext2syntax = {'.wiki': 'media'}
+
 " Hardtime
 lua <<EOF
 require("hardtime").setup({
