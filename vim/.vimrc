@@ -365,8 +365,8 @@ EOF
 " Run :Mtm automatically for markdown & vimwiki files
 " Since we installed vimwiki, markdown files are now vimwiki files.
 " If you don't want to use vimwiki, use the following instead:
-" autocmd FileType markdown :Mtm
-autocmd FileType vimwiki :Mtm
+" autocmd FileType markdown ++once :Mtm
+autocmd FileType vimwiki ++once :Mtm
 
 " Lightline-delphinus
 let g:lightline_delphinus_use_powerline_glyphs = 1
