@@ -257,9 +257,6 @@ endif
 " Plugin Options {{{
 " TODO: clean up
 
-" Vimwiki: run only on .wiki files
-let g:vimwiki_ext2syntax = {'.wiki': 'media'}
-
 " Hardtime
 lua <<EOF
 require("hardtime").setup({
@@ -366,7 +363,9 @@ require('markdown-table-mode').setup({
 EOF
 
 " Run :Mtm automatically for markdown & vimwiki files
-autocmd FileType markdown :Mtm
+" Since we installed vimwiki, markdown files are now vimwiki files.
+" If you don't want to use vimwiki, use the following instead:
+" autocmd FileType markdown :Mtm
 autocmd FileType vimwiki :Mtm
 
 " Lightline-delphinus
