@@ -216,7 +216,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " }}}
 
 " Neotree {{{
-Plug 'nvim-lua/plenary.nvim' " neotree dependency
+Plug 'nvim-lua/plenary.nvim' " neotree dependency (+ todo-comments.nvim)
 Plug 'MunifTanjim/nui.nvim' " neotree dependency
 Plug 'nvim-neo-tree/neo-tree.nvim'
 " }}}
@@ -227,6 +227,11 @@ Plug 'ryanoasis/vim-devicons'				" add icons to vim
 Plug 'lewis6991/gitsigns.nvim'				" git integration
 Plug 'lukas-reineke/indent-blankline.nvim'	" show indent guides
 Plug 'TheGLander/indent-rainbowline.nvim'	" show colored indents
+Plug 'folke/todo-comments.nvim'             " color INFO, FIX, WARN, PERF, TEST (+ PASSED, FAILED), HACK, TODO, NOTE keywords
+Plug 'folke/which-key.nvim'					" show key combo suggestions like emacs
+Plug 'chentoast/marks.nvim'					" show where you set your marks
+Plug 'mawkler/hml.nvim'						" show H (highest), M (middle), L (lowest) instead of numbers
+Plug 'sphamba/smear-cursor.nvim'			" better cursor animations
 " }}}
 
 " Others {{{
@@ -256,6 +261,29 @@ endif
 
 " Plugin Options {{{
 " TODO: clean up
+
+" smear-cursor.nvim
+lua <<EOF
+require("smear_cursor").setup({
+	enabled = true,
+	smear_between_buffers = true,
+	smear_between_neighbor_lines = true,
+	scroll_buffer_space = true,
+	smear_insert_mode = true
+})
+EOF
+
+" hml.nvim
+lua require("hml").setup()
+
+" marks.nvim
+lua require("marks").setup()
+
+" which-key.nvim
+lua require("which-key").setup()
+
+" todo-comments.nvim
+lua require("todo-comments").setup()
 
 " Hardtime
 lua <<EOF
