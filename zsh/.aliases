@@ -1,1 +1,84 @@
-../bash/.aliases
+# -*- bash -*-
+
+# use doas instead of sudo
+[ $(which doas 2>/dev/null) ] && alias sudo="doas" || alias doas="sudo"
+
+# use neovim instead of vim if nvim is installed
+[ $(which nvim 2>/dev/null) ] && alias vi="nvim" || alias vi="vim"
+[ $(which nvim 2>/dev/null) ] && alias vim="nvim" && alias vmi="nvim" || alias vmi="vim"
+
+# make programs verbose
+alias \
+	cp="cp -v" \
+	ln="ln -v" \
+	ls="ls --group-directories-first --color=always" \
+	mv="mv -v" \
+	rm="rm -v" \
+	rsync="rsync -v" \
+
+# add color support to grep and others
+alias \
+	dir='dir --color=always' \
+	egrep='grep -E --color=always' \
+	fgrep='grep -F --color=always' \
+	grep='grep --color=auto' \
+	less="less -RS" \
+	vdir='vdir --color=always' \
+
+# easier directory navigation
+alias \
+	cd1='cd ..' \
+	cd2='cd ../..' \
+	cd3='cd ../../..' \
+
+# ansible
+alias \
+	ap="ansible-playbook" \
+	av="ansible-vault" \
+
+# podman
+alias \
+	pm="podman" \
+
+# program & system utils
+alias \
+	debug="valgrind --tool=memcheck --leak-check=yes --leak-check=full --show-reachable=yes --leak-resolution=high --trace-children=yes --track-origins=yes -s" \
+	measure-power="doas powerstat -cDgHRt" \
+	setx='setxkbmap it; xset r rate 250 50; xset m 1 1; xset s off; xset +dpms; xset dpms 600 600 600; xrdb -merge ~/.Xresources' \
+	startk='dbus-run-session startplasma-wayland' \
+
+# shell QoL
+alias \
+	f="cd \$(find * -type d | fzf --style=full)" \
+	neofetch="neofetch --color_blocks off" \
+
+# programs
+alias \
+	firefox="librewolf" \
+	mpv-hi="mpv --opengl-glfinish=yes --opengl-swapinterval=0 --vo=gpu --hwdec=vaapi --opengl-pbo" \
+	surf="tabbed -c surf -BNPTeg & disown" \
+	sxiv="nsxiv" \
+	virtssh="virt-manager -c 'qemu+ssh://ercole/system'" \
+	#rain='~/go/bin/rain' \
+
+# Video4Linux2 virtual webcam settings
+# check out https://github.com/umlaeute/v4l2loopback/wiki/GStreamer for more
+alias \
+	fakecam-snow='gst-launch-1.0 -v videotestsrc pattern=snow ! "video/x-raw,width=640,height=480,framerate=15/1,format=YUY2" ! v4l2sink device=/dev/video2' \
+	fakecam-smpte='gst-launch-1.0 -v videotestsrc pattern=smpte horizontal-speed=1 ! "video/x-raw,width=1280,height=720,framerate=30/1,format=YUY2" ! v4l2sink device=/dev/video2' \
+	fakecam-desktop="gst-launch-1.0 -v ximagesrc startx=1 starty=1 endx=320 endy=240 ! videoconvert ! "video/x-raw,format=YUY2" ! v4l2sink device=/dev/video2" \
+	fakecam-video="ffmpeg -stream_loop -1 -re -i CHANGEME -map 0:v -vf format=yuv420p -f v4l2 /dev/video2" \
+	start-fakecam='doas modprobe v4l2loopback devices=1 exclusive_caps=1 video_nr=2 card_label="Virtual camera"' \
+	webcam-inc-contrast="v4l2-ctl --set-ctrl contrast=35" \
+	webcam-dec-contrast="v4l2-ctl --set-ctrl contrast=0" \
+	webcam-inc-brightness="v4l2-ctl --set-ctrl brightness=85" \
+	webcam-dec-brightness="v4l2-ctl --set-ctrl brightness=0" \
+	webcam-inc-saturation="v4l2-ctl --set-ctrl saturation=80" \
+	webcam-dec-saturation="v4l2-ctl --set-ctrl saturation=0" \
+	webcam-inc-sharpness="v4l2-ctl --set-ctrl sharpness=7" \
+	webcam-dec-sharpness="v4l2-ctl --set-ctrl sharpness=2" \
+
+# mining
+alias \
+	benchmark='doas xmrig --bench=1M --submit -t 4 --randomx-1gb-pages --cpu-no-yield --cpu-priority 5 --randomx-mode fast --asm intel --randomx-no-numa --no-color --cpu-affinity 0xFF -a rx/0' \
+	mine-xmrig='doas schedtool -a 0x255 -n -20 -e xmrig -o pool.example.com:1234 -u CHANGEME+DIFFICULTY -k --rig-id RIG_ID --randomx-1gb-pages --cpu-no-yield --cpu-priority 5 --randomx-mode fast --asm intel --randomx-no-numa --no-color --print-time 120 --cpu-affinity 0x255 -a rx/0 -t 4 --huge-pages-jit --argon2-impl=AVX2'
