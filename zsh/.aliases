@@ -1,11 +1,11 @@
 # -*- bash -*-
 
 # use doas instead of sudo
-[ $(which doas 2>/dev/null) ] && alias sudo="doas" || alias doas="sudo"
+[[ $(which doas 2>/dev/null) ]] && alias sudo="doas" || alias doas="sudo"
 
 # use neovim instead of vim if nvim is installed
-[ $(which nvim 2>/dev/null) ] && alias vi="nvim" || alias vi="vim"
-[ $(which nvim 2>/dev/null) ] && alias vim="nvim" && alias vmi="nvim" || alias vmi="vim"
+[[ $(which nvim 2>/dev/null) ]] && alias vi="nvim" || alias vi="vim"
+[[ $(which nvim 2>/dev/null) ]] && alias vim="nvim" && alias vmi="nvim" || alias vmi="vim"
 
 # make programs verbose
 alias \
@@ -36,14 +36,12 @@ alias \
 	ap="ansible-playbook" \
 	av="ansible-vault" \
 
-# podman
-alias \
-	pm="podman" \
-
 # program & system utils
 alias \
 	debug="valgrind --tool=memcheck --leak-check=yes --leak-check=full --show-reachable=yes --leak-resolution=high --trace-children=yes --track-origins=yes -s" \
 	measure-power="doas powerstat -cDgHRt" \
+	poweroff='sudo /sbin/poweroff' \
+	reboot='sudo /sbin/reboot' \
 	setx='setxkbmap it; xset r rate 250 50; xset m 1 1; xset s off; xset +dpms; xset dpms 600 600 600; xrdb -merge ~/.Xresources' \
 	startk='dbus-run-session startplasma-wayland' \
 
@@ -56,10 +54,10 @@ alias \
 alias \
 	firefox="librewolf" \
 	mpv-hi="mpv --opengl-glfinish=yes --opengl-swapinterval=0 --vo=gpu --hwdec=vaapi --opengl-pbo" \
+	rain='~/go/bin/rain' \
 	surf="tabbed -c surf -BNPTeg & disown" \
 	sxiv="nsxiv" \
 	virtssh="virt-manager -c 'qemu+ssh://ercole/system'" \
-	#rain='~/go/bin/rain' \
 
 # Video4Linux2 virtual webcam settings
 # check out https://github.com/umlaeute/v4l2loopback/wiki/GStreamer for more
