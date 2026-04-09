@@ -239,6 +239,7 @@ Plug 'easymotion/vim-easymotion'			" move quicker
 Plug 'm4xshen/hardtime.nvim'				" break bad movement habits
 Plug 'Kicamon/markdown-table-mode.nvim'		" easier markdown table editing
 Plug 'vimwiki/vimwiki'						" personal wiki
+Plug 'akinsho/git-conflict.nvim'			" easily manage git conflicts
 " }}}
 call plug#end()
 " }}}
@@ -261,6 +262,20 @@ endif
 
 " Plugin Options {{{
 " TODO: clean up
+
+" git-conflict.nvim
+lua <<EOF
+require("git-conflict").setup({
+	default_mappings = true, -- enable buffer local mappings
+	default_commands = true, -- enable commands (:GitConflict*)
+	disable_diagnostics = false, -- disable the diagnostics in a buffer whilst it is conflicted
+	list_opener = 'copen', -- command or function to open the conflicts list
+	highlights = { -- They must have background color, otherwise the default color will be used
+		incoming = 'DiffAdd',
+		current = 'DiffText',
+	}
+})
+EOF
 
 " smear-cursor.nvim
 lua <<EOF
