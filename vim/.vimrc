@@ -240,6 +240,7 @@ Plug 'm4xshen/hardtime.nvim'				" break bad movement habits
 Plug 'Kicamon/markdown-table-mode.nvim'		" easier markdown table editing
 Plug 'vimwiki/vimwiki'						" personal wiki
 Plug 'akinsho/git-conflict.nvim'			" easily manage git conflicts
+Plug 'mluders/comfy-line-numbers.nvim'		" easier relativenumber navigation
 " }}}
 call plug#end()
 " }}}
@@ -262,6 +263,9 @@ endif
 
 " Plugin Options {{{
 " TODO: clean up
+
+" comfy-line-numbers.nvim
+lua require("comfy-line-numbers").setup()
 
 " git-conflict.nvim
 lua <<EOF
