@@ -8,10 +8,10 @@
 
 " Visual Options {{{
 " Tabs {{{
-set tabstop=4			" number of visual spaces per TAB
-set softtabstop=4		" number of spaces in tab when editing
-set shiftwidth=4		" insert 4 spaces on a tab
-"set expandtab			" insert spaces when the TAB key is pressed
+set tabstop=4			" number of visual spaces to show in a tab
+set shiftwidth=4		" number of spaces to insert when TAB key is pressed
+set softtabstop=0		" number of spaces in a tab when editing
+set noexpandtab			" do not insert spaces when the TAB key is pressed
 " }}}
 
 " UI {{{
