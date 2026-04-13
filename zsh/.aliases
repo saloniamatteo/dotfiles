@@ -47,10 +47,6 @@ alias \
 	ap="ansible-playbook" \
 	av="ansible-vault" \
 
-# podman
-alias \
-	pm="podman" \
-
 # program & system utils
 alias \
 	debug="valgrind --tool=memcheck --leak-check=yes --leak-check=full --show-reachable=yes --leak-resolution=high --trace-children=yes --track-origins=yes -s" \
