@@ -50,7 +50,12 @@ export LESS_TERMCAP_ZW=$(tput rsupm)
 export GROFF_NO_SGR=1         # For Konsole and Gnome-terminal
 
 # Extend PATH
-export PATH="$HOME/.local/bin:$HOME/.config/scripts:/etc/eselect/wine/bin:$PATH"
+# NOTE: later exports will result in a higher priority!
+# Example: export 1, export 2, export 3 will result in path=3,2,1
+export PATH="$HOME/.local/bin:$PATH"                  # Local scripts
+export PATH="$HOME/.config/scripts:$PATH"             # Local scripts
+#export PATH="$(brew --prefix gnu-getopt)/bin:$PATH"   # gnu-getopt
+# export PATH="/etc/eselect/wine/bin:$PATH"           # wine
 
 # Key timeout for Vim mode
 export KEYTIMEOUT=1
@@ -237,6 +242,12 @@ source /usr/share/doc/pkgfile/command-not-found.zsh
 # Gentoo: install https://github.com/Nowa-Ammerlaan/command-not-found-gentoo
 # Then uncomment:
 # source /etc/bash/bashrc.d/command-not-found.sh
+# --------------------------------------------------------------------
+# MacOS
+# HOMEBREW_COMMAND_NOT_FOUND_HANDLER="$(brew --repository)/Library/Homebrew/command-not-found/handler.sh"
+# if [ -f "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER" ]; then
+#   source "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER";
+# fi
 
 # Fast Syntax Highlighting
 # mkdir ~/software
@@ -268,6 +279,9 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 # git clone https://github.com/zsh-users/zsh-autosuggestions ~/software/zsh-autosuggestions
 # Then uncomment:
 # source ~/software/zsh-autosuggestions/zsh-autosuggestions.zsh
+# --------------------------------------------------------------------
+# MacOS:
+# source /opt/homebrew/Cellar/zsh-autosuggestions/*/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Kubernetes completions
 # For each command, if it exists in $PATH, a completion will be added
@@ -303,12 +317,12 @@ bindkey -M menuselect '^[[Z' reverse-menu-complete
 # Launch keychain (ssh-agent management)
 # https://github.com/funtoo/keychain
 # Do this only if not under linux terminal
-if [ $TERM != "linux" ]; then
+#if [ $TERM != "linux" ]; then
     # Only run keychain if ssh-agent is running already
-    if ! [ -z $(pidof ssh-agent) ]; then
-      eval "$(keychain --eval --agents ssh id_rsa)"
-    fi
-fi
+    #if ! [ -z $(pidof ssh-agent) ]; then
+      #eval "$(keychain --eval --agents ssh id_rsa)"
+    #fi
+#fi
 #< END OTHERS
 
 # Starship prompt (https://starship.rs/guide)
@@ -318,6 +332,7 @@ fi
 # Arch: sudo pacman -S starship
 # Debian: sudo apt install starship
 # Gentoo: sudo emerge -a starship
+# MacOS: brew install starship
 eval "$(starship init zsh)"
 
 # Hand over shell to user
