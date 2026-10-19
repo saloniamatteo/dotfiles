@@ -176,7 +176,7 @@ SERVICES_SHOULDREMOVE=(
 	"com.apple.sidecar-relay"
 
 	# Misc
-	"com.apple.translationd"
+	# "com.apple.translationd" # Don't disable: callservicesd loops at high CPU without it
 	"com.apple.voicebankingd"
 	"com.apple.AssetCache.agent"
 	"com.apple.AssetCacheLocatorService"
