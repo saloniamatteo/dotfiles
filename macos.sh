@@ -115,7 +115,7 @@ SERVICES_SHOULDREMOVE=(
 	# Apple Intelligence
 	"com.apple.GenerativeFunctions.agentstored"
 	"com.apple.assistant_cdmd"
-	"com.apple.generativeexperiencesd"
+	# "com.apple.generativeexperiencesd" # Disable only when also disabling campo, otherwise SiriAI eats all your CPU
 
 	# iCloud
 	"com.apple.AOSHeartbeat"
@@ -174,6 +174,21 @@ SERVICES_SHOULDREMOVE=(
 	# Sidecar (iPad as 2nd display)
 	"com.apple.sidecar-display-agent"
 	"com.apple.sidecar-relay"
+
+	# Apple devices continuity
+	# Don't disable these services if you have other Apple devices
+	# and you wish to share to/from them
+	"com.apple.AMPDeviceDiscoveryAgent"
+	#"com.apple.BTServer.cloudpairing"   # Don't disable: heard loops at high CPU without it
+	"com.apple.CommCenter"
+	"com.apple.StatusKitAgent"
+	"com.apple.cmio.ContinuityCaptureAgent"
+	"com.apple.liveactivitiesd"
+	"com.apple.mobiledeviceupdater"
+	"com.apple.rapportd"
+	"com.apple.rapportd-user"
+	"com.apple.replicatord"
+	"com.apple.sharingd"
 
 	# Misc
 	# "com.apple.translationd" # Don't disable: callservicesd loops at high CPU without it
